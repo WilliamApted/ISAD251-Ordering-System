@@ -108,3 +108,15 @@ C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\bin
 C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\OrderingSystem.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\OrderingSystem.dll
 C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\OrderingSystem.pdb
+C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\bin\Debug\netcoreapp3.0\OrderingSystem.Views.dll
+C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\bin\Debug\netcoreapp3.0\OrderingSystem.Views.pdb
+C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\OrderingSystem.RazorAssemblyInfo.cache
+C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\OrderingSystem.RazorAssemblyInfo.cs
+C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\OrderingSystem.TagHelpers.input.cache
+C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\OrderingSystem.TagHelpers.output.cache
+C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\OrderingSystem.RazorCoreGenerate.cache
+C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\Razor\Views\_ViewStart.cshtml.g.cs
+C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\OrderingSystem.RazorTargetAssemblyInfo.cs
+C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\OrderingSystem.Views.pdb
+C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\Razor\Views\Shared\_Layout.cshtml.g.cs
+C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\Razor\Views\Home\Index.cshtml.g.cs
