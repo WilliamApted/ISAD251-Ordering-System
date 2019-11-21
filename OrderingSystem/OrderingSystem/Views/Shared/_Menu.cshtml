@@ -1,0 +1,17 @@
+﻿@{ //Model List of menu items
+}
+
+<div class="row flex-column flex-md-row no-gutter">
+    <div class="col-sm-9 col-lg-9">
+        <div class="row no-gutter">
+            @foreach (var item in Model)
+            {
+                @await Html.PartialAsync("/Views/Shared/_MenuItem.cshtml")
+            }
+        </div>
+    </div>
+</div>
+
+
+
+
