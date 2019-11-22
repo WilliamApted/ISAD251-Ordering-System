@@ -1,4 +1,5 @@
-﻿
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor;
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,7 +27,30 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Menu</a>
                         </li>
-                    
+
+                        @if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle btn-primary" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Account
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item">@User.Identity.Name</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a onclick="Logout()" style="cursor:pointer;" class="dropdown-item">Logout</a>
+                                </div>
+                            </li>
+                        }
+                        else
+                        {
+                            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModalCenter">
+                                Sign in
+                            </button>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#">
+                                Register
+                            </button>
+                        }
+
                     </ul>
                 </div>
 
@@ -37,7 +61,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2019 -  Ordering System 
+            &copy; 2019 -  Ordering System
         </div>
     </footer>
 
@@ -46,7 +70,7 @@
             @RenderBody()
         </main>
     </div>
-          
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
