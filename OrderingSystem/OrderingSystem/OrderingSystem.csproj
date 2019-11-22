@@ -5,9 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Account\" />
-    <Folder Include="Models\Items\" />
-    <Folder Include="wwwroot\js\" />
+    <Compile Remove="Models\Account\**" />
+    <Content Remove="Models\Account\**" />
+    <EmbeddedResource Remove="Models\Account\**" />
+    <None Remove="Models\Account\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\AdminAccount\" />
   </ItemGroup>
 
   <ItemGroup>
