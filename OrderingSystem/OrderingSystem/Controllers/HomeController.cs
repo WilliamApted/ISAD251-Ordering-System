@@ -10,18 +10,22 @@ namespace OrderingSystem.Controllers
     public class HomeController : Controller
     {
 
+        private readonly DatabaseContext _context;
+        public HomeController(DatabaseContext context)
+        {
+            _context = context;
+        }
+
         public IActionResult Index()
         {
             return View(GetMenuItems());
         }
 
-        public LinkedList<Item> GetMenuItems() 
+        public List<Item> GetMenuItems() 
         {
-            LinkedList<Item> items = new LinkedList<Item>();
-
-            items.AddLast(new Item() { Name = "Example Item", Description = "Example description", Price = 2.99M, Category = 1 });
-            items.AddLast(new Item() { Name = "Example Item 2", Description = "Example description 2", Price = 2.99M, Category = 1 });
-
+            //Create database query - Only get available menu items.
+            var menuQuery = from item in _context.Item where item.Available == true select item;
+            List<Item> items = menuQuery.ToList();
             return items;       
         }
 

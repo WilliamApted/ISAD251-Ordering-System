@@ -120,6 +120,6 @@ C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj
 C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\OrderingSystem.Views.pdb
 C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\Razor\Views\Shared\_Layout.cshtml.g.cs
 C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\Razor\Views\Home\Index.cshtml.g.cs
-C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\Razor\Views\Shared\_Menu.cshtml.g.cs
-C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\Razor\Views\Shared\_MenuItem.cshtml.g.cs
 C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\Razor\Views\Shared\_ViewImports.cshtml.g.cs
+C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\Razor\Views\Shared\Menu\_Menu.cshtml.g.cs
+C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\Razor\Views\Shared\Menu\_MenuItem.cshtml.g.cs

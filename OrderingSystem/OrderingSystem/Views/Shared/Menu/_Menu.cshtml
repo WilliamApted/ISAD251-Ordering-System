@@ -1,0 +1,24 @@
+﻿@model List<Item>
+<!--Used for showing the full menu. Will iterate through each item and display in a grid -->
+
+<div class="btn-group flex-wrap m-2" data-toggle="buttons">
+    
+    <button class="btn btn-light btn-lg" type="button">Drinks</button>
+    <button class="btn btn-light btn-lg" type="button">Snacks</button>
+
+</div>
+
+<div class="row flex-column flex-md-row no-gutter">
+    <div class="col-sm-9 col-lg-9">
+        <div class="row no-gutter">
+            @foreach (var item in Model)
+            {
+                @await Html.PartialAsync("/Views/Shared/Menu/_MenuItem.cshtml", item)
+            }
+        </div>
+    </div>
+</div>
+
+
+
+

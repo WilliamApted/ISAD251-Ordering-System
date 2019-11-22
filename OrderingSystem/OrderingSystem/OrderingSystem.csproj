@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <Folder Include="Models\AdminAccount\" />
+    <Folder Include="wwwroot\Imgs\" />
   </ItemGroup>
 
   <ItemGroup>
