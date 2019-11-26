@@ -23,14 +23,12 @@ namespace OrderingSystem.Controllers
 
         public IActionResult Login()
         {
-            var model = new LoginModel { };
-            return View(model);
+            return View(new LoginModel());
         }
 
         public IActionResult Register()
         {
-            var model = new RegisterModel { };
-            return View(model);
+            return View(new RegisterModel());
         }
 
         [HttpPost]
@@ -91,7 +89,7 @@ namespace OrderingSystem.Controllers
 
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
 
-                return RedirectToAction("");
+                return RedirectToAction("Index", "Home");
             }
             else
             {
@@ -104,7 +102,7 @@ namespace OrderingSystem.Controllers
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Home");
         }
 
         private async Task<UserModel> AuthenticateUser(string email, string password)

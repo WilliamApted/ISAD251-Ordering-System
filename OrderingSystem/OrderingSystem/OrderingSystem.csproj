@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <Folder Include="Models\AdminAccount\" />
-    <Folder Include="wwwroot\Imgs\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,6 +23,12 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\Imgs\Items\Lemonade.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>
