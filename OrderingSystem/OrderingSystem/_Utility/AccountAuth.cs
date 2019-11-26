@@ -37,7 +37,7 @@ namespace OrderingSystem._Utility
         /// <returns>A 128bit/32character random string.</returns>
         public static string GenerateSalt() 
         {
-            RNGCryptoServiceProvider rngCryptoServiceProvider = new RNGCryptoServiceProvider();
+            using RNGCryptoServiceProvider rngCryptoServiceProvider = new RNGCryptoServiceProvider();
             byte[] randomBytes = new byte[32];
             rngCryptoServiceProvider.GetBytes(randomBytes);
             return Convert.ToBase64String(randomBytes);

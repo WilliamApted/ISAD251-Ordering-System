@@ -8,6 +8,7 @@
     <title>Ordering System - @ViewData["Title"] </title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <script src="~/js/site.js"></script>
 </head>
 <body class="bg-light">
 
@@ -43,12 +44,13 @@
                         }
                         else
                         {
-                            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModalCenter">
-                                Sign in
-                            </button>
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#">
-                                Register
-                            </button>
+                            <li class="nav-item">
+                                <a class="nav-link btn-secondary text-light" asp-area="" asp-controller="Account" asp-action="Login">Sign in</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link btn-primary text-light" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+                            </li>
                         }
 
                     </ul>
@@ -58,6 +60,7 @@
         </nav>
     </header>
 
+    <div id="modal-placeholder"></div>
 
     <footer class="border-top footer text-muted">
         <div class="container">

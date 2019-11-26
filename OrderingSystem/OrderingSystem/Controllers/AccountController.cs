@@ -21,6 +21,47 @@ namespace OrderingSystem.Controllers
             _context = context;
         }
 
+        public IActionResult Login()
+        {
+            var model = new LoginModel { };
+            return View(model);
+        }
+
+        public IActionResult Register()
+        {
+            var model = new RegisterModel { };
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterModel loginModel)
+        {
+            if (ModelState.IsValid)
+            {
+                //Check if email already exists
+                if((from userInfo in _context.User where loginModel.Email == userInfo.Email select userInfo).Count() > 0)   
+                {
+                    ModelState.AddModelError(string.Empty, "Email already exists.");
+                    return View();
+                }
+
+                //Creating salt, salting password then adding account record.
+                string salt = AccountAuth.GenerateSalt();
+                User newUser = new User() { Email = loginModel.Email, Password = AccountAuth.HashPass(salt, loginModel.Password), Salt = salt};
+                _context.User.Add(newUser);
+                _context.SaveChanges();
+
+                //Now log user in...
+                return await Login(new LoginModel() { Email = loginModel.Email, Password = loginModel.Password });
+            }
+            else
+            {
+                return View();
+            }
+        }
+
+
+
         [HttpPost]
         public async Task<IActionResult> Login(LoginModel loginModel)
         {
@@ -50,7 +91,7 @@ namespace OrderingSystem.Controllers
 
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
 
-                return RedirectToAction("Index");
+                return RedirectToAction("");
             }
             else
             {

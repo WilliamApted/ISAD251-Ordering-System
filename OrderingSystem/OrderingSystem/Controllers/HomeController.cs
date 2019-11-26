@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OrderingSystem.Models.Database;
+using OrderingSystem.Models.UserAccount;
 
 namespace OrderingSystem.Controllers
 {
@@ -21,6 +22,7 @@ namespace OrderingSystem.Controllers
             return View(GetMenuItems());
         }
 
+
         public List<Item> GetMenuItems() 
         {
             //Create database query - Only get available menu items.
@@ -28,6 +30,7 @@ namespace OrderingSystem.Controllers
             List<Item> items = menuQuery.ToList();
             return items;       
         }
+
 
     }
 }
