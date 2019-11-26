@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OrderingSystem.Models.Database;
-using OrderingSystem.Models.UserAccount;
 
 namespace OrderingSystem.Controllers
 {

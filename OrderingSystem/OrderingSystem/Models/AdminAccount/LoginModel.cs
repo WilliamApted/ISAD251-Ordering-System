@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace OrderingSystem.Models.UserAccount
+namespace OrderingSystem.Models.AdminAccount
 {
     public class LoginModel
     {
