@@ -8,15 +8,15 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using OrderingSystem._Utility;
 using OrderingSystem.Models.Database;
-using OrderingSystem.Models.UserAccount;
+using OrderingSystem.Models.AdminAccount;
 
 namespace OrderingSystem.Controllers
 {
-    public class AccountController : Controller
+    public class AdminController : Controller
     {
-
+        /*
         private readonly DatabaseContext _context;
-        public AccountController(DatabaseContext context)
+        public AdminController(DatabaseContext context)
         {
             _context = context;
         }
@@ -25,40 +25,6 @@ namespace OrderingSystem.Controllers
         {
             return View(new LoginModel());
         }
-
-        public IActionResult Register()
-        {
-            return View(new RegisterModel());
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Register(RegisterModel loginModel)
-        {
-            if (ModelState.IsValid)
-            {
-                //Check if email already exists
-                if((from userInfo in _context.User where loginModel.Email == userInfo.Email select userInfo).Count() > 0)   
-                {
-                    ModelState.AddModelError(string.Empty, "Email already exists.");
-                    return View();
-                }
-
-                //Creating salt, salting password then adding account record.
-                string salt = AccountAuth.GenerateSalt();
-                User newUser = new User() { Email = loginModel.Email, Password = AccountAuth.HashPass(salt, loginModel.Password), Salt = salt};
-                _context.User.Add(newUser);
-                _context.SaveChanges();
-
-                //Now log user in...
-                return await Login(new LoginModel() { Email = loginModel.Email, Password = loginModel.Password });
-            }
-            else
-            {
-                return View();
-            }
-        }
-
-
 
         [HttpPost]
         public async Task<IActionResult> Login(LoginModel loginModel)
@@ -124,5 +90,6 @@ namespace OrderingSystem.Controllers
                 return null;
             }
         }
+        */
     }
 }
