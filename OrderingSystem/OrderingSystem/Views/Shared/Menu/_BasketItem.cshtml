@@ -4,11 +4,18 @@
         <div class="col-3">
             <img class="w-100 h-100" src="@Model.ImgUrl" class="img-fluid" alt="@Model.Name">
         </div>
-        <div class="col-9">
+        <div class="col-6">
             <div class="card-block px-1">
                 <h5 class="card-title">@Model.Name</h5>
-                <h6 class="card-text">@Model.Quantity</h6>
+                <div class="btn-group mr-2" role="group" aria-label="@Model.Name Add and Remove">
+                    <button type="button" onclick="RemoveFromBasket(@Model.ItemId)" class="btn btn-outline-secondary">-</button>
+                    <a class="btn btn-outline-primary">@Model.Quantity</a>
+                    <button type="button" onclick="AddToBasket(@Model.ItemId)" class="btn btn-outline-secondary">+</button>
+                </div>
             </div>
+        </div>
+        <div class="col-3">
+            <h6>£@((Model.Quantity * Model.Price).ToString("#.00")) </h6>
         </div>
     </div>
 </div>

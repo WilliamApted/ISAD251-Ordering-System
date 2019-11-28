@@ -1,0 +1,19 @@
+﻿@model BasketItemModel
+<div class="card mb-3">
+    <div class="row no-gutters">
+        <div class="col-3">
+            <img class="h-100 w-100" src="@Model.ImgUrl" alt="...">
+        </div>
+        <div class="col-9">
+            <div class="card-body">
+                <h5 class="card-title">@Model.Name</h5>
+                <p class="card-text"></p>
+                <h4 class="text-right">£@((Model.Quantity * Model.Price).ToString("#.00")) </h4>
+                <div class="btn-group mr-2" role="group" aria-label="@Model.Name Add and Remove">
+                    <button type="button" class="btn btn-outline-dark">Quantity</button>
+                    <button type="button" class="btn btn-outline-dark">@Model.Quantity</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

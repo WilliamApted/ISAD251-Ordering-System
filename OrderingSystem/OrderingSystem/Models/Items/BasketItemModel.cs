@@ -7,6 +7,7 @@ namespace OrderingSystem.Models.Items
 {
     public class BasketItemModel
     {
+        public int ItemId { get; set; }
         public string Name { get; set; }
         public string ImgUrl { get; set; }
         public decimal Price { get; set; }

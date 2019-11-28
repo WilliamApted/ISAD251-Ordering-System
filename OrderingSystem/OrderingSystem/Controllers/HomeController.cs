@@ -21,7 +21,59 @@ namespace OrderingSystem.Controllers
 
         public IActionResult Index()
         {
-            return View(GetMenuItems());
+            ViewData["menu"] = GetMenuItems();
+
+            string cookieValue = Request.Cookies["Basket"];
+            List<CookieBasketModel> basket;
+
+            //Check if list exists in cookie, if it does, get it, then add or remove from list.
+            if (cookieValue != null && cookieValue != "")
+            {
+                //Cookie exists, so get the data 
+                basket = JsonSerializer.Deserialize<List<CookieBasketModel>>(cookieValue);
+            }
+            else
+            {
+                //Doesnt exist, so create new list
+                basket = new List<CookieBasketModel>();
+            }
+            ViewData["basket"] = GetBasketItemList(basket);
+
+
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ConfirmOrder(ConfirmOrderModel order)
+        {
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else {
+                return View();
+            }
+        }
+
+        public IActionResult ConfirmOrder() 
+        {
+            string cookieValue = Request.Cookies["Basket"];
+            List<CookieBasketModel> basket;
+
+            //Check if list exists in cookie, if it does, get it, then add or remove from list.
+            if (cookieValue != null && cookieValue != "")
+            {
+                //Cookie exists, so get the data 
+                basket = JsonSerializer.Deserialize<List<CookieBasketModel>>(cookieValue);
+            }
+            else
+            {
+                //Doesnt exist, so create new list
+                basket = new List<CookieBasketModel>();
+            }
+            ViewData["basket"] = GetBasketItemList(basket);
+
+            return View();
         }
 
 
@@ -33,8 +85,29 @@ namespace OrderingSystem.Controllers
             return items;       
         }
 
-        
-        public IActionResult UpdateOrderAsync(int itemId)
+        public IActionResult RemoveFromBasket(int itemId)
+        {
+            List<CookieBasketModel> basket = JsonSerializer.Deserialize<List<CookieBasketModel>>(Request.Cookies["Basket"]);
+
+            foreach (CookieBasketModel item in basket) 
+            {
+                if (item.ItemId == itemId) {
+                    item.Quantity--;
+                    if (item.Quantity < 1) 
+                    {
+                        basket.Remove(item);
+                        break;
+                    }               
+                }
+            }
+            Set("Basket", JsonSerializer.Serialize(basket));
+            List<BasketItemModel> basketModel = GetBasketItemList(basket);
+
+
+            return PartialView("/Views/Shared/Menu/_Basket.cshtml", basketModel);
+        }
+
+        public IActionResult AddToBasket(int itemId)
         {
             string cookieValue = Request.Cookies["Basket"];
             List<CookieBasketModel> basket;
@@ -44,16 +117,13 @@ namespace OrderingSystem.Controllers
             {
                 //Cookie exists, so get the data 
                 basket = JsonSerializer.Deserialize<List<CookieBasketModel>>(cookieValue);
-                basket = AddItemToBasket(basket, itemId);
-            }
-            else 
-            {
+            } else {
                 //Doesnt exist, so create new list
                 basket = new List<CookieBasketModel>();
-                basket = AddItemToBasket(basket, itemId);
             }
-            cookieValue = JsonSerializer.Serialize(basket);
+            basket = AddItemToBasket(basket, itemId);
 
+            cookieValue = JsonSerializer.Serialize(basket);
             //Response.Cookies.Delete("Basket");
 
             Set("Basket", cookieValue);
@@ -76,7 +146,7 @@ namespace OrderingSystem.Controllers
                 var menuQuery = from tempitem in _context.Item where tempitem.Id == item.ItemId select tempitem;
                 Item items = menuQuery.First();
                 //Adds the Basket Item model to the list
-                basketItems.Add(new BasketItemModel() { Name = items.Name, Quantity = item.Quantity, Price = items.Price, ImgUrl = items.ImageUrl });
+                basketItems.Add(new BasketItemModel() { ItemId = item.ItemId, Name = items.Name, Quantity = item.Quantity, Price = items.Price, ImgUrl = items.ImageUrl });
             }
 
             return basketItems;
@@ -103,6 +173,7 @@ namespace OrderingSystem.Controllers
             basket.Add(new CookieBasketModel() { ItemId = itemId, Quantity = 1 });
             return basket;
         }
+
 
         /// <summary>  
         /// set the cookie  

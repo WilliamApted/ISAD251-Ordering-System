@@ -2,9 +2,8 @@
     ViewData["Title"] = "Menu";
 }
 
-@await Html.PartialAsync("/Views/Shared/Menu/_Menu.cshtml")
+@await Html.PartialAsync("/Views/Shared/Menu/_Menu.cshtml", ViewData["menu"])
 
 <div id="basket">
-    <!--await Html.PartialAsync("/Views/Shared/Menu/_Basket.cshtml", new List<BasketItemModel>())-->
+    @await Html.PartialAsync("/Views/Shared/Menu/_Basket.cshtml", ViewData["basket"])
 </div>
-

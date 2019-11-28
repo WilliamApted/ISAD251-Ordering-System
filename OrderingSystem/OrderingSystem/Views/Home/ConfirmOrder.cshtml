@@ -1,0 +1,47 @@
+﻿@model ConfirmOrderModel
+@{
+    ViewData["Title"] = "Confirm Order";
+}
+
+<h2>ConfirmOrder</h2>
+
+<div>
+    <div class="card mb-3">
+        <div class="row no-gutters">
+            <div class="col-12">
+                <div class="card-body">
+                    <a asp-controller="Home" asp-action="Index" style="width:160px;" class="btn btn-primary">Return to Menu</a>
+
+                    <form method="post" asp-action="ConfirmOrder" asp-controller="Home">
+                        <hr>
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <div class="form-row">
+                            <div class="col">
+                                <input type="text" asp-for="Name" class="form-control" placeholder="Name">
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="col">
+                                <input type="text" asp-for="TableNumber" class="form-control" placeholder="Table Number">
+                                <span asp-validation-for="TableNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group float-left">
+                            <h4>Total: </h4>
+                        </div>
+                        <div class="form-group float-right">
+                            <button style="width:160px;" type="submit" class="btn btn-primary">Confirm</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @foreach (BasketItemModel item in (List<BasketItemModel>)ViewData["basket"])
+    {
+        @await Html.PartialAsync("/Views/Shared/Order/_ConfirmItem.cshtml", item);
+    }
+</div>
+
+
