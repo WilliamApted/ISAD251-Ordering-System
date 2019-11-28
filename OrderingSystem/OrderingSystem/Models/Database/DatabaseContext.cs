@@ -18,5 +18,11 @@ namespace OrderingSystem.Models.Database
         {
             Database.EnsureCreated();   
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<OrderItem>()
+                .HasKey(c => new { c.OrderId, c.ItemId});
+        }
     }
 }

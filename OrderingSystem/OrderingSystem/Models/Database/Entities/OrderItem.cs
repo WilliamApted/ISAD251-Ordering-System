@@ -10,6 +10,7 @@ namespace OrderingSystem.Models.Database
     {
         [Key]
         public int OrderId { get; set; }
+        [Key]
         public int ItemId { get; set; }
         public int Quantity { get; set; }
     }

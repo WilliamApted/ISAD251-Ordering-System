@@ -13,12 +13,5 @@ namespace OrderingSystem.Controllers
         {
             _context = context;
         }
-
-
-
-
-
-
-
     }
 }

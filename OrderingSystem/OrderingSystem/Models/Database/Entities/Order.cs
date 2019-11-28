@@ -7,8 +7,9 @@ namespace OrderingSystem.Models.Database
 {
     public class Order
     {
-        public int OrderId { get; set; }
-        public int UserId { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int Table { get; set; }
         public DateTime dateTime { get; set; }
 
     }

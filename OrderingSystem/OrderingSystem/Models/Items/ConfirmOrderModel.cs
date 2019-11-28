@@ -8,10 +8,11 @@ namespace OrderingSystem.Models.Items
 {
     public class ConfirmOrderModel
     {
-        [StringLength(80, ErrorMessage = "Maximum name length is 50 characters.")]
-        public string Name { get; set; }
         [Required]
+        [StringLength(80, MinimumLength = 1, ErrorMessage = "Maximum name length is 50 characters.")]
+        public string Name { get; set; }
+        [Required(ErrorMessage = "The table number is required.")]
         [RegularExpression("^[0-9]*$", ErrorMessage = "Incorrect table number.")]
-        public int TableNumber { get; set; }
+        public int? TableNumber { get; set; }
     }
 }

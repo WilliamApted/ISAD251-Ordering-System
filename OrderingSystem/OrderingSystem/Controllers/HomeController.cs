@@ -23,56 +23,81 @@ namespace OrderingSystem.Controllers
         {
             ViewData["menu"] = GetMenuItems();
 
-            string cookieValue = Request.Cookies["Basket"];
-            List<CookieBasketModel> basket;
+            ViewData["basket"] = GetBasketItemList(GetBasketList());
+            
+            return View();
+        }
 
+
+        public List<CookieBasketModel> GetBasketList() 
+        {
+            string cookieValue = Request.Cookies["Basket"];
             //Check if list exists in cookie, if it does, get it, then add or remove from list.
             if (cookieValue != null && cookieValue != "")
             {
                 //Cookie exists, so get the data 
-                basket = JsonSerializer.Deserialize<List<CookieBasketModel>>(cookieValue);
+                return JsonSerializer.Deserialize<List<CookieBasketModel>>(cookieValue);
             }
             else
             {
                 //Doesnt exist, so create new list
-                basket = new List<CookieBasketModel>();
+                return new List<CookieBasketModel>();
             }
-            ViewData["basket"] = GetBasketItemList(basket);
-
-
-            return View();
         }
+
+        public decimal GetBasketTotal(List<CookieBasketModel> basket) 
+        {
+            decimal total = 0;
+            foreach (CookieBasketModel basketItem in basket) 
+            {
+                var menuQuery = from item in _context.Item where item.Id == basketItem.ItemId select item;
+                total = total + basketItem.Quantity * menuQuery.First().Price;
+            }
+            return total;
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> ConfirmOrder(ConfirmOrderModel order)
         {
             if (ModelState.IsValid)
             {
+                //Get item list with quantities - Check valid entries, with them available.
+                List<CookieBasketModel> basket = GetBasketList();
+
+                //Create new order, add name, table number etc
+                
+                //Move to stored procedures where possible
+                if (basket.Count > 0) 
+                {
+                    Order orderEntry = new Order() { dateTime = DateTime.Now, Name = order.Name, Table = (int)order.TableNumber };
+                    _context.Order.Add(orderEntry);
+                    _context.SaveChanges();
+
+                    foreach(CookieBasketModel item in basket) 
+                    {
+                        _context.OrderItem.Add(new OrderItem() { ItemId = item.ItemId, Quantity = item.Quantity, OrderId = orderEntry.Id });
+                    }
+                    _context.SaveChanges();
+                }
+
+                    //Add new orderItems 
+
                 return RedirectToAction("Index", "Home");
             }
             else {
+                List<CookieBasketModel> basket = GetBasketList();
+                ViewData["basket"] = GetBasketItemList(basket);
+                ViewData["total"] = GetBasketTotal(basket);
                 return View();
             }
         }
 
         public IActionResult ConfirmOrder() 
         {
-            string cookieValue = Request.Cookies["Basket"];
-            List<CookieBasketModel> basket;
-
-            //Check if list exists in cookie, if it does, get it, then add or remove from list.
-            if (cookieValue != null && cookieValue != "")
-            {
-                //Cookie exists, so get the data 
-                basket = JsonSerializer.Deserialize<List<CookieBasketModel>>(cookieValue);
-            }
-            else
-            {
-                //Doesnt exist, so create new list
-                basket = new List<CookieBasketModel>();
-            }
+            List<CookieBasketModel> basket = GetBasketList();
             ViewData["basket"] = GetBasketItemList(basket);
-
+            ViewData["total"] = GetBasketTotal(basket);
             return View();
         }
 
