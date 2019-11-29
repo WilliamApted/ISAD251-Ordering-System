@@ -5,6 +5,13 @@
     }
 }
 
+.vertical-center {
+    min-height: 100%;
+    min-height: 100vh; 
+    display: flex;
+    align-items: center;
+}
+
 /* remove rounding from cards, buttons and inputs */
 .card, .btn, .form-control {
     border-radius: 0;

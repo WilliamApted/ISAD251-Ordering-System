@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewData["Title"] = "ViewOrderList";
+}
+
+<hr>
+<h2>View order</h2>
+
+<div>
+    <div class="card mb-3">
+        <div class="row no-gutters">
+            <div class="col-12">
+                <div class="card-body">
+                    <div class="mb-5">
+                        <div class="float-left">
+                            <a asp-controller="Home" asp-action="ViewOrder" class="btn btn-primary">View another order</a>
+                        </div>
+                        <div class="float-right">
+                            <a asp-controller="Home" asp-action="ViewOrder" class="btn btn-primary">Edit order</a>
+                        </div>
+                    </div>
+                    <hr>
+                    <div>
+                        <p>Order placed 29/11/19 - 19:40</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @await Html.PartialAsync("/Views/Shared/Order/_ConfirmItem.cshtml", new BasketItemModel() { Name = "Example", ImgUrl = "~/Imgs/Items/CarrotCake.jpg" })
+    @await Html.PartialAsync("/Views/Shared/Order/_ConfirmItem.cshtml", new BasketItemModel() { Name = "Example", ImgUrl = "~/Imgs/Items/CarrotCake.jpg" })
+    @await Html.PartialAsync("/Views/Shared/Order/_ConfirmItem.cshtml", new BasketItemModel() { Name = "Example", ImgUrl = "~/Imgs/Items/CarrotCake.jpg" })
+    @await Html.PartialAsync("/Views/Shared/Order/_ConfirmItem.cshtml", new BasketItemModel() { Name = "Example", ImgUrl = "~/Imgs/Items/CarrotCake.jpg" })
+    @await Html.PartialAsync("/Views/Shared/Order/_ConfirmItem.cshtml", new BasketItemModel() { Name = "Example", ImgUrl = "~/Imgs/Items/CarrotCake.jpg" })
+
+</div>

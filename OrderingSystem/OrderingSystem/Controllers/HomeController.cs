@@ -28,6 +28,14 @@ namespace OrderingSystem.Controllers
             return View();
         }
 
+        public IActionResult ViewOrder() 
+        {
+            return View();
+        }
+        public IActionResult ViewOrderList()
+        {
+            return View();
+        }
 
         public List<CookieBasketModel> GetBasketList() 
         {
@@ -79,6 +87,12 @@ namespace OrderingSystem.Controllers
                         _context.OrderItem.Add(new OrderItem() { ItemId = item.ItemId, Quantity = item.Quantity, OrderId = orderEntry.Id });
                     }
                     _context.SaveChanges();
+                    Set("Basket", "");
+
+                    ViewData["OrderNo"] = orderEntry.Id;
+                    ViewData["OrderName"] = orderEntry.Name;
+                    
+                    return View("OrderComplete");
                 }
 
                     //Add new orderItems 

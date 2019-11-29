@@ -129,3 +129,6 @@ C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj
 C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\Razor\Views\Admin\Login.cshtml.g.cs
 C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\Razor\Views\Home\ConfirmOrder.cshtml.g.cs
 C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\Razor\Views\Shared\Order\_ConfirmItem.cshtml.g.cs
+C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\Razor\Views\Home\OrderComplete.cshtml.g.cs
+C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\Razor\Views\Home\ViewOrder.cshtml.g.cs
+C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\Razor\Views\Home\ViewOrderList.cshtml.g.cs
