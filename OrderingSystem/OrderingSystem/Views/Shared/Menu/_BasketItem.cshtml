@@ -8,9 +8,9 @@
             <div class="card-block px-1">
                 <h5 class="card-title">@Model.Name</h5>
                 <div class="btn-group mr-2" role="group" aria-label="@Model.Name Add and Remove">
-                    <button type="button" onclick="RemoveFromBasket(@Model.ItemId)" class="btn btn-outline-secondary">-</button>
-                    <a class="btn btn-outline-primary">@Model.Quantity</a>
-                    <button type="button" onclick="AddToBasket(@Model.ItemId)" class="btn btn-outline-secondary">+</button>
+                    <button type="button" onclick="RemoveFromBasket(@Model.ItemId)" class="btn btn-light font-weight-bolder">-</button>
+                    <a class="btn btn-light font-weight-bolder">@Model.Quantity</a>
+                    <button type="button" onclick="AddToBasket(@Model.ItemId)" class="btn btn-light font-weight-bolder">+</button>
                 </div>
             </div>
         </div>

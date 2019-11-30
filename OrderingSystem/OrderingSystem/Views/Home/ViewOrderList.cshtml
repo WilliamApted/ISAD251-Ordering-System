@@ -1,10 +1,10 @@
-﻿
+﻿@model ViewOrderModel
 @{
-    ViewData["Title"] = "ViewOrderList";
+    ViewData["Title"] = "View Order";
 }
 
 <hr>
-<h2>View order</h2>
+<h2>View order - #@ViewData["OrderNumber"]</h2>
 
 <div>
     <div class="card mb-3">
@@ -17,20 +17,44 @@
                         </div>
                         <div class="float-right">
                             <a asp-controller="Home" asp-action="ViewOrder" class="btn btn-primary">Edit order</a>
+                            <button data-toggle="modal" data-target="#cancelModal" class="btn btn-danger">Cancel order</button>
                         </div>
+
                     </div>
                     <hr>
                     <div>
-                        <p>Order placed 29/11/19 - 19:40</p>
+                        <p>@ViewData["OrderDate"]</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    @await Html.PartialAsync("/Views/Shared/Order/_ConfirmItem.cshtml", new BasketItemModel() { Name = "Example", ImgUrl = "~/Imgs/Items/CarrotCake.jpg" })
-    @await Html.PartialAsync("/Views/Shared/Order/_ConfirmItem.cshtml", new BasketItemModel() { Name = "Example", ImgUrl = "~/Imgs/Items/CarrotCake.jpg" })
-    @await Html.PartialAsync("/Views/Shared/Order/_ConfirmItem.cshtml", new BasketItemModel() { Name = "Example", ImgUrl = "~/Imgs/Items/CarrotCake.jpg" })
-    @await Html.PartialAsync("/Views/Shared/Order/_ConfirmItem.cshtml", new BasketItemModel() { Name = "Example", ImgUrl = "~/Imgs/Items/CarrotCake.jpg" })
-    @await Html.PartialAsync("/Views/Shared/Order/_ConfirmItem.cshtml", new BasketItemModel() { Name = "Example", ImgUrl = "~/Imgs/Items/CarrotCake.jpg" })
 
+    @foreach (BasketItemModel item in (List<BasketItemModel>)ViewData["OrderDetails"])
+    {
+    @await Html.PartialAsync("/Views/Shared/Order/_ConfirmItem.cshtml", item);
+    }
+
+</div>
+
+
+<!-- Confirm order cancellation modal -->
+<div class="modal fade" id="cancelModal" tabindex="-1" role="dialog" aria-labelledby="cancelModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cancelModal">Cancel order</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to cancel order #@ViewData["OrderNumber"]? 
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" onclick="" class="btn btn-danger">Cancel Order</button>
+            </div>
+        </div>
+    </div>
 </div>

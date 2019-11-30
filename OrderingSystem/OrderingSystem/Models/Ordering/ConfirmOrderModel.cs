@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace OrderingSystem.Models.Items
+namespace OrderingSystem.Models.Ordering
 {
     public class ConfirmOrderModel
     {

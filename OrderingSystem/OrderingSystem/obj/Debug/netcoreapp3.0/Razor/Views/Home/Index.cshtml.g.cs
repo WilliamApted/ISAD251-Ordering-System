@@ -21,7 +21,7 @@ using OrderingSystem.Models.Database;
 #nullable disable
 #nullable restore
 #line 3 "C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\Views\_ViewImports.cshtml"
-using OrderingSystem.Models.Items;
+using OrderingSystem.Models.Ordering;
 
 #line default
 #line hidden
@@ -34,7 +34,7 @@ using OrderingSystem.Models.AdminAccount;
 #line hidden
 #nullable disable
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"fbcf147bf2c581423cf7e67e8329daffdff2d090", @"/Views/Home/Index.cshtml")]
-    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"f3ae2334b05b4c42c98a8d4a962711759145560b", @"/Views/_ViewImports.cshtml")]
+    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"7e498e080dbca134f0f95d4ffb519c98deeb7518", @"/Views/_ViewImports.cshtml")]
     public class Views_Home_Index : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<dynamic>
     {
         #pragma warning disable 1998

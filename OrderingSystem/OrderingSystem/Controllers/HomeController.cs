@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OrderingSystem.Models.Database;
-using OrderingSystem.Models.Items;
+using OrderingSystem.Models.Ordering;
 
 namespace OrderingSystem.Controllers
 {
@@ -32,10 +32,55 @@ namespace OrderingSystem.Controllers
         {
             return View();
         }
-        public IActionResult ViewOrderList()
+        
+        [HttpPost]
+        public IActionResult ViewOrder(ViewOrderModel viewOrderDetails)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+
+                var orderDetailsQuery = from item in _context.Order where item.Id == viewOrderDetails.OrderNumber && item.Name == viewOrderDetails.Name select item;
+                Order order = orderDetailsQuery.First();
+
+                if (order != null)
+                {
+                    List<BasketItemModel> items;
+
+                    var orderQuery = from item in _context.OrderItem where item.OrderId == viewOrderDetails.OrderNumber select item;
+                    List<OrderItem> orderItems = orderQuery.ToList();
+
+                    ViewData["OrderDetails"] = GetItemList(orderItems);
+                    ViewData["OrderNumber"] = order.Id;
+                    ViewData["OrderDate"] = order.dateTime;
+
+                    SetCookie("EditOrder", JsonSerializer.Serialize(viewOrderDetails));                    
+
+                    return View("ViewOrderList", viewOrderDetails);
+                }
+                else 
+                {
+                    //Incorrect name/id
+                    return View();
+                }
+            }
+            else 
+            {
+                return View();
+            }
         }
+
+        [HttpPost]
+        public IActionResult CancelOrder() 
+        {
+            ViewOrderModel order = JsonSerializer.Deserialize<ViewOrderModel>(Request.Cookies["EditOrder"]);
+
+            //Check the order details again
+
+            //If correct, delete all orderitems with that id and the order > Stored procedure.
+
+            return ViewOrder(order);
+        }
+
 
         public List<CookieBasketModel> GetBasketList() 
         {
@@ -87,7 +132,7 @@ namespace OrderingSystem.Controllers
                         _context.OrderItem.Add(new OrderItem() { ItemId = item.ItemId, Quantity = item.Quantity, OrderId = orderEntry.Id });
                     }
                     _context.SaveChanges();
-                    Set("Basket", "");
+                    SetCookie("Basket", "");
 
                     ViewData["OrderNo"] = orderEntry.Id;
                     ViewData["OrderName"] = orderEntry.Name;
@@ -139,7 +184,7 @@ namespace OrderingSystem.Controllers
                     }               
                 }
             }
-            Set("Basket", JsonSerializer.Serialize(basket));
+            SetCookie("Basket", JsonSerializer.Serialize(basket));
             List<BasketItemModel> basketModel = GetBasketItemList(basket);
 
 
@@ -165,7 +210,7 @@ namespace OrderingSystem.Controllers
             cookieValue = JsonSerializer.Serialize(basket);
             //Response.Cookies.Delete("Basket");
 
-            Set("Basket", cookieValue);
+            SetCookie("Basket", cookieValue);
             List<BasketItemModel> basketModel = GetBasketItemList(basket);
             return PartialView("/Views/Shared/Menu/_Basket.cshtml", basketModel);
         }
@@ -189,6 +234,22 @@ namespace OrderingSystem.Controllers
             }
 
             return basketItems;
+        }
+
+        public List<BasketItemModel> GetItemList(List<OrderItem> orderItems)
+        {
+            List<BasketItemModel> itemDetails = new List<BasketItemModel>();
+
+            foreach (OrderItem item in orderItems)
+            {
+                //Perhaps use stored procedure to get this...
+                var menuQuery = from tempitem in _context.Item where tempitem.Id == item.ItemId select tempitem;
+                Item items = menuQuery.First();
+                //Adds the Basket Item model to the list
+                itemDetails.Add(new BasketItemModel() { ItemId = item.ItemId, Name = items.Name, Quantity = item.Quantity, Price = items.Price, ImgUrl = items.ImageUrl });
+            }
+
+            return itemDetails;
         }
 
         /// <summary>
@@ -219,7 +280,7 @@ namespace OrderingSystem.Controllers
         /// </summary>  
         /// <param name="key">Cookie identifier.</param>  
         /// <param name="value">String to store in the cookie.</param>  
-        public void Set(string key, string value)
+        public void SetCookie(string key, string value)
         {
             CookieOptions option = new CookieOptions();
             option.Expires = DateTime.Now.AddDays(7);

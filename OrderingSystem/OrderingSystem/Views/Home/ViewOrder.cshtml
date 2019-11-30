@@ -1,4 +1,4 @@
-﻿
+﻿@model ViewOrderModel
 @{
     ViewData["Title"] = "ViewOrder";
 }
@@ -12,15 +12,14 @@
                         <hr>
                         <div class="form-row mb-3">
                             <div class="col">
-                                <input type="text" class="form-control" placeholder="Name">
-                                <span class="text-danger"></span>
+                                <input type="text" asp-for="Name" class="form-control" placeholder="Name">
+                                <span asp-validation-for="Name" class="text-danger"></span>
                             </div>
                             <div class="col">
-                                <input type="text" class="form-control" placeholder="Order Number">
-                                <span class="text-danger"></span>
+                                <input type="text" asp-for="OrderNumber" class="form-control" placeholder="Table Number">
+                                <span asp-validation-for="OrderNumber" class="text-danger"></span>
                             </div>
                         </div>
-
                         <div class="form-group text-center">
                             <button style="width:160px;" type="submit" class="btn btn-primary">View Order</button>
                         </div>

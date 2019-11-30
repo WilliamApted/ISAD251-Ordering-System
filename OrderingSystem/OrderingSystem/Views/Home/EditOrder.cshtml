@@ -1,0 +1,11 @@
+﻿
+@{
+    ViewData["Title"] = "EditOrder";
+}
+
+@await Html.PartialAsync("/Views/Shared/Menu/_Menu.cshtml", ViewData["menu"])
+
+<div id="basket">
+    @await Html.PartialAsync("/Views/Shared/Menu/_EditBasket.cshtml", ViewData["basket"])
+</div>
+
