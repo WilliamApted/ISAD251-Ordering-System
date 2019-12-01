@@ -26,10 +26,12 @@ function RemoveFromBasket($itemId) {
     });
 }
 
+
+
 function EditItem($itemId) {
     $.post({
         type: "post",
-        url: '/Admin/EditItem',
+        url: '/Admin/EditItemRequest',
         data: { itemId: $itemId },
         success: function (data) {
             $(window.document.body).html(data)

@@ -1,7 +1,27 @@
-﻿
+﻿@model List<Order>
 @{
-    ViewData["Title"] = "ViewOrders";
+    ViewData["Title"] = "Orders";
 }
 
-<h1>ViewOrders</h1>
+<h1>Orders</h1>
 
+@foreach (Order order in Model)
+{ 
+    <div class="card mb-3">
+        <div class="row no-gutters">
+            <div class="col-12">
+                <div class="card-header">
+                    <h5 class="float-left">Order #@order.Id</h5>
+                    <h5 class="float-right">@order.dateTime </h5>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="card-body">
+                    <p>Order placed by <b>@order.Name</b> at table <b>@order.Table</b></p>
+                </div>
+                <div class="">
+                    <button class="btn btn-block btn-light">Show order details</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}

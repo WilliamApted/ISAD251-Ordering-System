@@ -48,15 +48,20 @@ namespace OrderingSystem.Controllers
         [Authorize]
         public IActionResult ViewOrders()
         {
-            return View();
+            //Get list of all orders, basic details - ID, Name, Table Number, Time...
+            var orderQuery = from order in _context.Order select order;
+            orderQuery = orderQuery.OrderByDescending(orderby => orderby.Id);
+            List<Order> items = orderQuery.ToList();
+
+            return View(items);
         }
 
         [Authorize]
-        public IActionResult EditItem(int itemId)
+        public IActionResult EditItemRequest(int itemId)
         {
             Item item = _context.Item.First(select => select.Id == itemId);
 
-            return View(new ItemModel(item));
+            return View("EditItem", new ItemModel(item));
         }
 
         [Authorize]

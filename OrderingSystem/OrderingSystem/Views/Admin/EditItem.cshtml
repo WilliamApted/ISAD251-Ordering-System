@@ -5,13 +5,14 @@
 
 <h1>Edit Item</h1>
 
-
 <form asp-action="EditItem" asp-controller="Admin">
 
     <div asp-validation-summary="All"> </div>
 
+    <input asp-for="Id" class="form-control" placeholder="Name of item" readonly/>
+
     <label asp-for="Name">Name</label>
-    <input asp-for="Name" class="form-control" placeholder="Name of item"/>
+    <input asp-for="Name" class="form-control" placeholder="Name of item" />
     <span asp-validation-for="Name"> </span>
 
     <label asp-for="Description">Description</label>
