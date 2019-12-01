@@ -10,11 +10,11 @@ using OrderingSystem.Models.Ordering;
 
 namespace OrderingSystem.Controllers
 {
-    public class HomeController : Controller
+    public class OrderController : Controller
     {
 
         private readonly DatabaseContext _context;
-        public HomeController(DatabaseContext context)
+        public OrderController(DatabaseContext context)
         {
             _context = context;
         }
