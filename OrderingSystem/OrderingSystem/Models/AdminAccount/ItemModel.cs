@@ -1,41 +1,38 @@
-﻿using OrderingSystem.Models.AdminAccount;
+﻿using OrderingSystem.Models.Database;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace OrderingSystem.Models.Database
+namespace OrderingSystem.Models.AdminAccount
 {
-    public class Item
+    public class ItemModel
     {
         public int Id { get; set; }
+        [Required]
         public string Name { get; set; }
         public string Description { get; set; }
         public string ImageUrl { get; set; }
+        [Required]
         public decimal Price { get; set; }
+        [Required]
         public int Category { get; set; }
+        [Required]
         public bool Available { get; set; }
 
-        public Item() { }
 
-        public Item(ItemModel item) 
-        {
-            UpdateParams(item);
-        }
+        public ItemModel() { }
 
-        public void UpdateModel(ItemModel item) 
+        public ItemModel(Item item) 
         {
-            UpdateParams(item);
-        }
-
-        private void UpdateParams(ItemModel item) 
-        {
+            Id = item.Id;
             Name = item.Name;
             Description = item.Description;
             ImageUrl = item.ImageUrl;
             Price = item.Price;
             Category = item.Category;
-            Available = item.Available;
+            Available = item.Available;        
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿function AddToBasket($itemId) {
     $.ajax({
         type: "post",
-        url: '/Home/AddToBasket',
+        url: '/Order/AddToBasket',
         data: { itemId: $itemId },
         success: function (data) {
             $("#basket").html(data);
@@ -15,7 +15,7 @@
 function RemoveFromBasket($itemId) {
     $.ajax({
         type: "post",
-        url: '/Home/RemoveFromBasket',
+        url: '/Order/RemoveFromBasket',
         data: { itemId: $itemId },
         success: function (data) {
             $("#basket").html(data);
@@ -26,10 +26,21 @@ function RemoveFromBasket($itemId) {
     });
 }
 
+function EditItem($itemId) {
+    $.post({
+        type: "post",
+        url: '/Admin/EditItem',
+        data: { itemId: $itemId },
+        success: function (data) {
+            $(window.document.body).html(data)
+        },
+    });
+}
+
 function Logout() {
     $.post({
         type: "post",
-        url: '/Account/Logout',
+        url: '/Admin/Logout',
         success: function() {
             window.location.reload()
         },

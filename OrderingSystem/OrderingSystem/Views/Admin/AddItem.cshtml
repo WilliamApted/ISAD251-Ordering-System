@@ -1,0 +1,47 @@
+﻿@model ItemModel
+@{
+    ViewData["Title"] = "Add Item";
+}
+
+<h1>Add Item</h1>
+
+<form asp-action="AddItem" asp-controller="Admin">
+
+    <div asp-validation-summary="All"> </div>
+
+    <label asp-for="Name">Name</label>
+    <input asp-for="Name" class="form-control" placeholder="Name of item" />
+    <span asp-validation-for="Name"> </span>
+
+    <label asp-for="Description">Description</label>
+    <input asp-for="Description" class="form-control" placeholder="Description" />
+    <span asp-validation-for="Description"> </span>
+
+    <label asp-for="Price">Price</label>
+    <input asp-for="Price" class="form-control" placeholder="Price" />
+    <span asp-validation-for="Price"> </span>
+
+    <label asp-for="ImageUrl">Image</label>
+    <input asp-for="ImageUrl" class="form-control" placeholder="Image url" />
+    <span asp-validation-for="ImageUrl"> </span>
+
+    <div class="form-group">
+        <label asp-for="Category">Category</label>
+        <select asp-for="Category" class="form-control">
+            <option value="1">Drinks</option>
+            <option value="2">Snacks</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <div class="form-check">
+            <input asp-for="Available" class="form-check-input" type="checkbox" id="gridCheck">
+            <label asp-for="Available" class="form-check-label" for="gridCheck">
+                Available (Unticking will withdraw from sale)
+            </label>
+        </div>
+    </div>
+
+    <button class="btn btn-primary" type="submit">Create Item</button>
+
+</form>

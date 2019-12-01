@@ -135,3 +135,9 @@ C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj
 C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\Razor\Views\Order\ViewOrder.cshtml.g.cs
 C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\Razor\Views\Order\ViewOrderList.cshtml.g.cs
 C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\Razor\Views\Admin\Index.cshtml.g.cs
+C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\Razor\Views\Admin\_Layout.cshtml.g.cs
+C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\Razor\Views\Shared\Admin\_ItemList.cshtml.g.cs
+C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\Razor\Views\Shared\Admin\_Item.cshtml.g.cs
+C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\Razor\Views\Admin\AddItem.cshtml.g.cs
+C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\Razor\Views\Admin\ViewOrders.cshtml.g.cs
+C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\Razor\Views\Admin\EditItem.cshtml.g.cs

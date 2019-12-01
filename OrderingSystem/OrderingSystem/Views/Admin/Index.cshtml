@@ -1,7 +1,9 @@
 ﻿
 @{
+    Layout = "_Layout";
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
 
+
+@await Html.PartialAsync("/Views/Shared/Admin/_ItemList.cshtml", ViewData["menu"])
