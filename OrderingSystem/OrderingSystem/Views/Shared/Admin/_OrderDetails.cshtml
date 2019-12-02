@@ -1,0 +1,6 @@
+﻿@model List<BasketItemModel>
+
+@foreach (BasketItemModel item in Model)
+{
+    @await Html.PartialAsync("/Views/Shared/Order/_ConfirmItem.cshtml", item);
+}

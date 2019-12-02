@@ -58,12 +58,29 @@ namespace OrderingSystem.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult ViewOrderDetails()
+        public IActionResult ViewOrderDetails(int orderId)
         {
-            //Get all the items for a specific order and list them. 
-            //Will be called using AJAX.
+            int example = orderId;
+            var orderQuery = from orderSearch in _context.OrderItem where orderSearch.OrderId == orderId select orderSearch;
+            List<OrderItem> orderItems = orderQuery.ToList();
+                                             
+            return PartialView("/Views/Shared/Admin/_OrderDetails.cshtml", GetItemList(orderItems));
+        }
 
-            return View();
+        public List<BasketItemModel> GetItemList(List<OrderItem> orderItems)
+        {
+            List<BasketItemModel> itemDetails = new List<BasketItemModel>();
+
+            foreach (OrderItem item in orderItems)
+            {
+                //Perhaps use stored procedure to get this...
+                var menuQuery = from tempitem in _context.Item where tempitem.Id == item.ItemId select tempitem;
+                Item items = menuQuery.First();
+                //Adds the Basket Item model to the list
+                itemDetails.Add(new BasketItemModel() { ItemId = item.ItemId, Name = items.Name, Quantity = item.Quantity, Price = items.Price, ImgUrl = items.ImageUrl });
+            }
+
+            return itemDetails;
         }
 
 

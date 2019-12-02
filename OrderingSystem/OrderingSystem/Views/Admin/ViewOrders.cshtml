@@ -16,10 +16,11 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="card-body">
-                    <p>Order placed by <b>@order.Name</b> at table <b>@order.Table</b></p>
+                    <p class="float-left">Order placed by <b>@order.Name</b> at table <b>@order.Table</b></p>
+                    <button id="showHide@(order.Id)" onclick="ViewOrderDetail(@order.Id)" class="btn btn-primary float-right">Show/Hide Details</button>
+                    <div class="clearfix"></div>
                 </div>
-                <div class="">
-                    <button class="btn btn-block btn-light">Show order details</button>
+                <div class="card-footer" id="orderDetails@(order.Id)">
                 </div>
             </div>
         </div>

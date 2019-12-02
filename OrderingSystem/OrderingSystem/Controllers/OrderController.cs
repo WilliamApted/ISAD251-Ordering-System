@@ -5,6 +5,8 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using OrderingSystem.Models.Database;
 using OrderingSystem.Models.Ordering;
 
@@ -38,9 +40,9 @@ namespace OrderingSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-
+                Order order = null;
                 var orderDetailsQuery = from item in _context.Order where item.Id == viewOrderDetails.OrderNumber && item.Name == viewOrderDetails.Name select item;
-                Order order = orderDetailsQuery.First();
+                if(orderDetailsQuery.Count() > 0) order = orderDetailsQuery.First();
 
                 if (order != null)
                 {
@@ -50,6 +52,7 @@ namespace OrderingSystem.Controllers
                     List<OrderItem> orderItems = orderQuery.ToList();
 
                     ViewData["OrderDetails"] = GetItemList(orderItems);
+                    ViewData["OrderName"] = order.Name;
                     ViewData["OrderNumber"] = order.Id;
                     ViewData["OrderDate"] = order.dateTime;
 
@@ -81,17 +84,22 @@ namespace OrderingSystem.Controllers
         [HttpPost]
         public IActionResult CancelOrder(int orderId, string name) 
         {
-            var orderDetailsQuery = from item in _context.Order where item.Id == orderId && item.Name == name select item;
-            Order order = orderDetailsQuery.First();
-
-            if (order != null)
+            try
             {
-                //stored procedure to remove an order, so delete all orderItems with X id and then the order.
+                var orderDetailsQuery = from item in _context.Order where item.Id == orderId && item.Name == name select item;
+                Order order = orderDetailsQuery.First();
 
-
-                //return confirmation of deletion.
+                if (order != null)
+                {
+                    //stored procedure to remove an order, so delete all orderItems with X id and then the order.
+                    SqlParameter param1 = new SqlParameter("@query", orderId);
+                    _context.Database.ExecuteSqlRaw("DeleteOrder @query", param1);
+                    //return confirmation of deletion.
+                    return RedirectToAction("ViewOrder");
+                }
             }
-
+            catch(Exception e) { //Error here? Or make sure now error 
+            }
             //return delete error
             return View("Index");
         }
