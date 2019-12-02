@@ -57,6 +57,17 @@ namespace OrderingSystem.Controllers
         }
 
         [Authorize]
+        [HttpPost]
+        public IActionResult ViewOrderDetails()
+        {
+            //Get all the items for a specific order and list them. 
+            //Will be called using AJAX.
+
+            return View();
+        }
+
+
+        [Authorize]
         public IActionResult EditItemRequest(int itemId)
         {
             Item item = _context.Item.First(select => select.Id == itemId);

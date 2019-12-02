@@ -2,7 +2,6 @@ C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\bin
 C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\bin\Debug\netcoreapp3.0\appsettings.json
 C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\bin\Debug\netcoreapp3.0\Properties\launchSettings.json
 C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\bin\Debug\netcoreapp3.0\OrderingSystem.exe
-C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\OrderingSystem.csprojAssemblyReference.cache
 C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\staticwebassets\OrderingSystem.StaticWebAssets.Manifest.cache
 C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\staticwebassets\OrderingSystem.StaticWebAssets.xml
 C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\OrderingSystem.AssemblyInfoInputs.cache
@@ -141,3 +140,4 @@ C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj
 C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\Razor\Views\Admin\AddItem.cshtml.g.cs
 C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\Razor\Views\Admin\ViewOrders.cshtml.g.cs
 C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\Razor\Views\Admin\EditItem.cshtml.g.cs
+C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\OrderingSystem.csprojAssemblyReference.cache

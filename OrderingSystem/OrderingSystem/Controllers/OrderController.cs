@@ -70,15 +70,30 @@ namespace OrderingSystem.Controllers
         }
 
         [HttpPost]
-        public IActionResult CancelOrder() 
+        public IActionResult EditOrder(int orderId, string name)
         {
-            ViewOrderModel order = JsonSerializer.Deserialize<ViewOrderModel>(Request.Cookies["EditOrder"]);
+            //Return page to edit order, fill backet with previous order items. Store id of the order etc to then save changes. 
 
-            //Check the order details again
+            return View("Index");
+        }
 
-            //If correct, delete all orderitems with that id and the order > Stored procedure.
 
-            return ViewOrder(order);
+        [HttpPost]
+        public IActionResult CancelOrder(int orderId, string name) 
+        {
+            var orderDetailsQuery = from item in _context.Order where item.Id == orderId && item.Name == name select item;
+            Order order = orderDetailsQuery.First();
+
+            if (order != null)
+            {
+                //stored procedure to remove an order, so delete all orderItems with X id and then the order.
+
+
+                //return confirmation of deletion.
+            }
+
+            //return delete error
+            return View("Index");
         }
 
 

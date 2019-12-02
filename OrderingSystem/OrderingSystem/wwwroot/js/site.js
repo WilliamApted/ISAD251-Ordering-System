@@ -26,7 +26,27 @@ function RemoveFromBasket($itemId) {
     });
 }
 
+function EditOrder($orderId, $name) {
+    $.post({
+        type: "post",
+        url: '/Order/EditOrder',
+        data: { orderId: $orderId, name: $name },
+        success: function (data) {
+            $(window.document.body).html(data)
+        },
+    });
+}
 
+function CancelOrder($orderId, $name) {
+    $.post({
+        type: "post",
+        url: '/Order/CancelOrder',
+        data: { orderId: $orderId, name: $name },
+        success: function (data) {
+            $(window.document.body).html(data)
+        },
+    });
+}
 
 function EditItem($itemId) {
     $.post({
