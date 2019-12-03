@@ -16,7 +16,7 @@
                             <a asp-controller="Order" asp-action="ViewOrder" class="btn btn-primary">View another order</a>
                         </div>
                         <div class="float-right">
-                            <a asp-controller="Order" asp-action="ViewOrder" class="btn btn-primary">Edit order</a>
+                            <button onclick="EditOrder(@(ViewData["OrderNumber"]),'@(ViewData["OrderName"])')" class="btn btn-primary">Edit order</button>
                             <button data-toggle="modal" data-target="#cancelModal" class="btn btn-danger">Cancel order</button>
                         </div>
 

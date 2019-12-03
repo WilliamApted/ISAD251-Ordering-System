@@ -37,6 +37,16 @@ function EditOrder($orderId, $name) {
     });
 }
 
+function SaveOrder() {
+    $.post({
+        type: "post",
+        url: '/Order/SaveEditOrder',
+        success: function (data) {
+            $(window.document.body).html(data)
+        },
+    });
+}
+
 function CancelOrder($orderId, $name) {
     $.post({
         type: "post",

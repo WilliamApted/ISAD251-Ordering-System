@@ -19,7 +19,7 @@
     <div class="card sticky h-100 col-sm-3 col-md-3 col-lg-2 m-0 p-0" style="padding-top:55px !important">
 
         <div class="card-header">
-            <h3 class="card-title text-center">Edit Order</h3>
+            <h4 class="card-title text-center">Editing Order</h4>
         </div>
         <ul class="list-group list-group-flush overflow-auto">
             <!--Will put all the basket/order items here-->
@@ -30,7 +30,7 @@
         </ul>
         <div class="card-body"></div>
         <div class="card-footer">
-            <a asp-controller="Order" asp-action="ConfirmOrder" class="btn btn-primary btn-block">Save changes</a>
+            <button onclick="SaveOrder()" class="btn btn-primary btn-block">Save changes</button>
         </div>
     </div>
 </div>

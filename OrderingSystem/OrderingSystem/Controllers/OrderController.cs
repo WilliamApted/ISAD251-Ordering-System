@@ -25,6 +25,11 @@ namespace OrderingSystem.Controllers
         {
             ViewData["menu"] = GetMenuItems();
 
+            if(Request.Cookies["EditOrder"] != null) 
+                ViewData["editing"] = true; 
+            else 
+                ViewData["editing"] = false;
+
             ViewData["basket"] = GetBasketItemList(GetBasketList());
             
             return View();
@@ -56,8 +61,6 @@ namespace OrderingSystem.Controllers
                     ViewData["OrderNumber"] = order.Id;
                     ViewData["OrderDate"] = order.dateTime;
 
-                    SetCookie("EditOrder", JsonSerializer.Serialize(viewOrderDetails));                    
-
                     return View("ViewOrderList", viewOrderDetails);
                 }
                 else 
@@ -75,11 +78,61 @@ namespace OrderingSystem.Controllers
         [HttpPost]
         public IActionResult EditOrder(int orderId, string name)
         {
-            //Return page to edit order, fill backet with previous order items. Store id of the order etc to then save changes. 
+            var orderDetailsQuery = from item in _context.Order where item.Id == orderId && item.Name == name select item;
+            Order order = orderDetailsQuery.First();
 
-            return View("Index");
+            if (order != null)
+            {
+                //Return page to edit order, fill backet with previous order items. Store id of the order etc to then save changes. 
+                ViewOrderModel orderModel = new ViewOrderModel() { Name = name, OrderNumber = orderId };
+                SetCookie("EditOrder", JsonSerializer.Serialize(orderModel));
+
+                SetEditBasket(orderId);
+          
+                //Response.Cookies.Delete("Basket");
+
+            }
+            return RedirectToAction("Index");
         }
 
+        public void SetEditBasket(int orderId) 
+        {
+            var orderQuery = from item in _context.OrderItem where item.OrderId == orderId select item;
+            List<OrderItem> orderItems = orderQuery.ToList();
+            SetCookie("Basket", JsonSerializer.Serialize(orderItems.ConvertAll(x => new CookieBasketModel { ItemId = x.ItemId, Quantity = x.Quantity})));
+        }
+
+        [HttpPost]
+        public IActionResult SaveEditOrder()
+        {
+            ViewOrderModel orderInfo = JsonSerializer.Deserialize<ViewOrderModel>(Request.Cookies["EditOrder"]);
+
+
+            var orderDetailsQuery = from item in _context.Order where item.Id == orderInfo.OrderNumber && item.Name == orderInfo.Name select item;
+            Order order = orderDetailsQuery.First();
+
+            if (order != null)
+            {
+                SqlParameter param1 = new SqlParameter("@query", orderInfo.OrderNumber);
+                _context.Database.ExecuteSqlRaw("DeleteOrderItems @query", param1);
+
+                List<CookieBasketModel> basket = GetBasketList();
+
+                foreach (CookieBasketModel item in basket)
+                {
+                    _context.OrderItem.Add(new OrderItem() { ItemId = item.ItemId, Quantity = item.Quantity, OrderId = orderInfo.OrderNumber });
+                }
+                _context.SaveChanges();
+                SetCookie("Basket", "");
+                RemoveCookie("EditOrder");
+
+
+            }
+
+            return View("EditOrderComplete");
+
+
+        }
 
         [HttpPost]
         public IActionResult CancelOrder(int orderId, string name) 
@@ -210,7 +263,10 @@ namespace OrderingSystem.Controllers
             SetCookie("Basket", JsonSerializer.Serialize(basket));
             List<BasketItemModel> basketModel = GetBasketItemList(basket);
 
-
+            if (Request.Cookies["EditOrder"] != null) 
+            {
+                return PartialView("/Views/Shared/Menu/_EditBasket.cshtml", basketModel);
+            }
             return PartialView("/Views/Shared/Menu/_Basket.cshtml", basketModel);
         }
 
@@ -235,6 +291,11 @@ namespace OrderingSystem.Controllers
 
             SetCookie("Basket", cookieValue);
             List<BasketItemModel> basketModel = GetBasketItemList(basket);
+
+            if (Request.Cookies["EditOrder"] != null)
+            {
+                return PartialView("/Views/Shared/Menu/_EditBasket.cshtml", basketModel);
+            }
             return PartialView("/Views/Shared/Menu/_Basket.cshtml", basketModel);
         }
 
@@ -310,8 +371,11 @@ namespace OrderingSystem.Controllers
             Response.Cookies.Append(key, value, option);
         }
 
-
-
-
+        public void RemoveCookie(string key)
+        {
+            CookieOptions option = new CookieOptions();
+            option.Expires = DateTime.Now.AddDays(-10);
+            Response.Cookies.Append(key, "", option);
+        }
     }
 }
