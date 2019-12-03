@@ -25,6 +25,7 @@ namespace OrderingSystem.Controllers
         {
             ViewData["menu"] = GetMenuItems();
 
+            //Should be a call to get the correct basket type...
             if(Request.Cookies["EditOrder"] != null) 
                 ViewData["editing"] = true; 
             else 
@@ -35,11 +36,26 @@ namespace OrderingSystem.Controllers
             return View();
         }
 
+        //Gets all available menu items (Need to add filters?? Also when build api??)
+        public List<Item> GetMenuItems()
+        {
+            //Create database query - Only get available menu items.
+            var menuQuery = from item in _context.Item where item.Available == true select item;
+            List<Item> items = menuQuery.ToList();
+            return items;
+        }
+
+
+
+
+
+        //Returns the view order page
         public IActionResult ViewOrder() 
         {
             return View();
         }
         
+        //Gets Order Details, List of order items.   Checks the order exists first.
         [HttpPost]
         public IActionResult ViewOrder(ViewOrderModel viewOrderDetails)
         {
@@ -75,6 +91,7 @@ namespace OrderingSystem.Controllers
             }
         }
 
+        //Get order items, put into basket, go to menu.      Checks the order exists first.
         [HttpPost]
         public IActionResult EditOrder(int orderId, string name)
         {
@@ -95,13 +112,7 @@ namespace OrderingSystem.Controllers
             return RedirectToAction("Index");
         }
 
-        public void SetEditBasket(int orderId) 
-        {
-            var orderQuery = from item in _context.OrderItem where item.OrderId == orderId select item;
-            List<OrderItem> orderItems = orderQuery.ToList();
-            SetCookie("Basket", JsonSerializer.Serialize(orderItems.ConvertAll(x => new CookieBasketModel { ItemId = x.ItemId, Quantity = x.Quantity})));
-        }
-
+        //Deletes all previous order items, then saves order basket.     Checks order exists first. 
         [HttpPost]
         public IActionResult SaveEditOrder()
         {
@@ -133,9 +144,10 @@ namespace OrderingSystem.Controllers
 
 
         }
-
+     
+        //Deletes the order with stored procedure.           First checks the order name/id correct and it exists.
         [HttpPost]
-        public IActionResult CancelOrder(int orderId, string name) 
+        public IActionResult CancelOrder(int orderId, string name)
         {
             try
             {
@@ -151,13 +163,81 @@ namespace OrderingSystem.Controllers
                     return RedirectToAction("ViewOrder");
                 }
             }
-            catch(Exception e) { //Error here? Or make sure now error 
+            catch (Exception e)
+            { //Error here? Or make sure now error 
             }
             //return delete error
             return View("Index");
         }
 
+        //Creates new Order row, then adds OrderItems. Returns order complete.   
+        [HttpPost]
+        public IActionResult ConfirmOrder(ConfirmOrderModel order)
+        {
+            if (ModelState.IsValid)
+            {
+                //Get item list with quantities - Check valid entries, with them available.
+                List<CookieBasketModel> basket = GetBasketList();
 
+                //Create new order, add name, table number etc
+
+                //Move to stored procedures where possible
+                if (basket.Count > 0)
+                {
+                    Order orderEntry = new Order() { dateTime = DateTime.Now, Name = order.Name, Table = (int)order.TableNumber };
+                    _context.Order.Add(orderEntry);
+                    _context.SaveChanges();
+
+                    foreach (CookieBasketModel item in basket)
+                    {
+                        _context.OrderItem.Add(new OrderItem() { ItemId = item.ItemId, Quantity = item.Quantity, OrderId = orderEntry.Id });
+                    }
+                    _context.SaveChanges();
+                    SetCookie("Basket", "");
+
+                    ViewData["OrderNo"] = orderEntry.Id;
+                    ViewData["OrderName"] = orderEntry.Name;
+
+                    return View("OrderComplete");
+                }
+
+                //Add new orderItems 
+
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                List<CookieBasketModel> basket = GetBasketList();
+                ViewData["basket"] = GetBasketItemList(basket);
+                ViewData["total"] = GetBasketTotal(basket);
+                return View();
+            }
+        }
+
+        //Loads order comfirmation page
+        public IActionResult ConfirmOrder()
+        {
+            List<CookieBasketModel> basket = GetBasketList();
+            ViewData["basket"] = GetBasketItemList(basket);
+            ViewData["total"] = GetBasketTotal(basket);
+            return View();
+        }
+
+
+
+
+
+
+        //Fills basket with items of a previous order, enabling editing of order.
+        //Need to stop convertion of objects ideally...
+        public void SetEditBasket(int orderId) 
+        {
+            var orderQuery = from item in _context.OrderItem where item.OrderId == orderId select item;
+            List<OrderItem> orderItems = orderQuery.ToList();
+            SetCookie("Basket", JsonSerializer.Serialize(orderItems.ConvertAll(x => new CookieBasketModel { ItemId = x.ItemId, Quantity = x.Quantity})));
+        }
+
+        //Gets basket list from cookie
         public List<CookieBasketModel> GetBasketList() 
         {
             string cookieValue = Request.Cookies["Basket"];
@@ -174,6 +254,7 @@ namespace OrderingSystem.Controllers
             }
         }
 
+        //Calculates the total value of items in a basket
         public decimal GetBasketTotal(List<CookieBasketModel> basket) 
         {
             decimal total = 0;
@@ -184,67 +265,8 @@ namespace OrderingSystem.Controllers
             }
             return total;
         }
-
-
-        [HttpPost]
-        public async Task<IActionResult> ConfirmOrder(ConfirmOrderModel order)
-        {
-            if (ModelState.IsValid)
-            {
-                //Get item list with quantities - Check valid entries, with them available.
-                List<CookieBasketModel> basket = GetBasketList();
-
-                //Create new order, add name, table number etc
-                
-                //Move to stored procedures where possible
-                if (basket.Count > 0) 
-                {
-                    Order orderEntry = new Order() { dateTime = DateTime.Now, Name = order.Name, Table = (int)order.TableNumber };
-                    _context.Order.Add(orderEntry);
-                    _context.SaveChanges();
-
-                    foreach(CookieBasketModel item in basket) 
-                    {
-                        _context.OrderItem.Add(new OrderItem() { ItemId = item.ItemId, Quantity = item.Quantity, OrderId = orderEntry.Id });
-                    }
-                    _context.SaveChanges();
-                    SetCookie("Basket", "");
-
-                    ViewData["OrderNo"] = orderEntry.Id;
-                    ViewData["OrderName"] = orderEntry.Name;
-                    
-                    return View("OrderComplete");
-                }
-
-                    //Add new orderItems 
-
-                return RedirectToAction("Index", "Home");
-            }
-            else {
-                List<CookieBasketModel> basket = GetBasketList();
-                ViewData["basket"] = GetBasketItemList(basket);
-                ViewData["total"] = GetBasketTotal(basket);
-                return View();
-            }
-        }
-
-        public IActionResult ConfirmOrder() 
-        {
-            List<CookieBasketModel> basket = GetBasketList();
-            ViewData["basket"] = GetBasketItemList(basket);
-            ViewData["total"] = GetBasketTotal(basket);
-            return View();
-        }
-
-
-        public List<Item> GetMenuItems() 
-        {
-            //Create database query - Only get available menu items.
-            var menuQuery = from item in _context.Item where item.Available == true select item;
-            List<Item> items = menuQuery.ToList();
-            return items;       
-        }
-
+           
+        //Removes item from basket (Held in cookie)
         public IActionResult RemoveFromBasket(int itemId)
         {
             List<CookieBasketModel> basket = JsonSerializer.Deserialize<List<CookieBasketModel>>(Request.Cookies["Basket"]);
@@ -263,6 +285,7 @@ namespace OrderingSystem.Controllers
             SetCookie("Basket", JsonSerializer.Serialize(basket));
             List<BasketItemModel> basketModel = GetBasketItemList(basket);
 
+            //Need to put into single function
             if (Request.Cookies["EditOrder"] != null) 
             {
                 return PartialView("/Views/Shared/Menu/_EditBasket.cshtml", basketModel);
@@ -270,28 +293,17 @@ namespace OrderingSystem.Controllers
             return PartialView("/Views/Shared/Menu/_Basket.cshtml", basketModel);
         }
 
+        //Adds item to the basket
         public IActionResult AddToBasket(int itemId)
         {
-            string cookieValue = Request.Cookies["Basket"];
-            List<CookieBasketModel> basket;
+            List<CookieBasketModel> basket = GetBasketList();
 
-            //Check if list exists in cookie, if it does, get it, then add or remove from list.
-            if (cookieValue != null && cookieValue != "")
-            {
-                //Cookie exists, so get the data 
-                basket = JsonSerializer.Deserialize<List<CookieBasketModel>>(cookieValue);
-            } else {
-                //Doesnt exist, so create new list
-                basket = new List<CookieBasketModel>();
-            }
             basket = AddItemToBasket(basket, itemId);
 
-            cookieValue = JsonSerializer.Serialize(basket);
-            //Response.Cookies.Delete("Basket");
-
-            SetCookie("Basket", cookieValue);
+            SetCookie("Basket", JsonSerializer.Serialize(basket));
             List<BasketItemModel> basketModel = GetBasketItemList(basket);
 
+            //Can be in seperate function
             if (Request.Cookies["EditOrder"] != null)
             {
                 return PartialView("/Views/Shared/Menu/_EditBasket.cshtml", basketModel);
@@ -320,6 +332,7 @@ namespace OrderingSystem.Controllers
             return basketItems;
         }
 
+        //Does the same as GetBasketItemList... just for the Complete Order Page etc.
         public List<BasketItemModel> GetItemList(List<OrderItem> orderItems)
         {
             List<BasketItemModel> itemDetails = new List<BasketItemModel>();
@@ -357,6 +370,8 @@ namespace OrderingSystem.Controllers
             basket.Add(new CookieBasketModel() { ItemId = itemId, Quantity = 1 });
             return basket;
         }
+
+
 
 
         /// <summary>  
