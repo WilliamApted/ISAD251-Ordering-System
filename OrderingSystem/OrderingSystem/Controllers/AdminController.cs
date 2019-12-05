@@ -58,6 +58,7 @@ namespace OrderingSystem.Controllers
 
         [Authorize]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult ViewOrderDetails(int orderId)
         {
             int example = orderId;
@@ -94,6 +95,7 @@ namespace OrderingSystem.Controllers
 
         [Authorize]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult EditItem(ItemModel editItem)
         {
             if (ModelState.IsValid)
@@ -118,6 +120,7 @@ namespace OrderingSystem.Controllers
 
         [Authorize]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult AddItem(ItemModel newItem) 
         {
             if (ModelState.IsValid)
@@ -135,6 +138,7 @@ namespace OrderingSystem.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginModel loginModel)
         {
             if (ModelState.IsValid)
@@ -159,6 +163,7 @@ namespace OrderingSystem.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);

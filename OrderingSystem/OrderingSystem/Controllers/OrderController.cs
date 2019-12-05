@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -57,6 +58,7 @@ namespace OrderingSystem.Controllers
         
         //Gets Order Details, List of order items.   Checks the order exists first.
         [HttpPost]
+        //[ValidateAntiForgeryToken]
         public IActionResult ViewOrder(ViewOrderModel viewOrderDetails)
         {
             if (ModelState.IsValid)
@@ -93,12 +95,10 @@ namespace OrderingSystem.Controllers
 
         //Get order items, put into basket, go to menu.      Checks the order exists first.
         [HttpPost]
+        //[ValidateAntiForgeryToken]
         public IActionResult EditOrder(int orderId, string name)
         {
-            var orderDetailsQuery = from item in _context.Order where item.Id == orderId && item.Name == name select item;
-            Order order = orderDetailsQuery.First();
-
-            if (order != null)
+            if (CheckOrderExists(orderId, name))
             {
                 //Return page to edit order, fill backet with previous order items. Store id of the order etc to then save changes. 
                 ViewOrderModel orderModel = new ViewOrderModel() { Name = name, OrderNumber = orderId };
@@ -114,15 +114,12 @@ namespace OrderingSystem.Controllers
 
         //Deletes all previous order items, then saves order basket.     Checks order exists first. 
         [HttpPost]
+        //[ValidateAntiForgeryToken]
         public IActionResult SaveEditOrder()
         {
             ViewOrderModel orderInfo = JsonSerializer.Deserialize<ViewOrderModel>(Request.Cookies["EditOrder"]);
 
-
-            var orderDetailsQuery = from item in _context.Order where item.Id == orderInfo.OrderNumber && item.Name == orderInfo.Name select item;
-            Order order = orderDetailsQuery.First();
-
-            if (order != null)
+            if (CheckOrderExists(orderInfo.OrderNumber, orderInfo.Name))
             {
                 SqlParameter param1 = new SqlParameter("@query", orderInfo.OrderNumber);
                 _context.Database.ExecuteSqlRaw("DeleteOrderItems @query", param1);
@@ -136,8 +133,6 @@ namespace OrderingSystem.Controllers
                 _context.SaveChanges();
                 SetCookie("Basket", "");
                 RemoveCookie("EditOrder");
-
-
             }
 
             return View("EditOrderComplete");
@@ -147,6 +142,7 @@ namespace OrderingSystem.Controllers
      
         //Deletes the order with stored procedure.           First checks the order name/id correct and it exists.
         [HttpPost]
+        //[ValidateAntiForgeryToken]
         public IActionResult CancelOrder(int orderId, string name)
         {
             try
@@ -172,6 +168,7 @@ namespace OrderingSystem.Controllers
 
         //Creates new Order row, then adds OrderItems. Returns order complete.   
         [HttpPost]
+        //[ValidateAntiForgeryToken]
         public IActionResult ConfirmOrder(ConfirmOrderModel order)
         {
             if (ModelState.IsValid)
@@ -180,6 +177,15 @@ namespace OrderingSystem.Controllers
                 List<CookieBasketModel> basket = GetBasketList();
 
                 //Create new order, add name, table number etc
+
+
+                //SqlParameter Oid = new SqlParameter("@orderId", orderId);
+                //SqlParameter Oname = new SqlParameter("@name", name);
+
+                //_context.Database.ExecuteSqlRaw("CheckOrderExists @orderId, @name, @returnVal", Oid, Oname);
+
+
+
 
                 //Move to stored procedures where possible
                 if (basket.Count > 0)
@@ -223,15 +229,26 @@ namespace OrderingSystem.Controllers
             return View();
         }
 
+        //Checks an order exists in the database with the provided Id and Name.
+        public bool CheckOrderExists(int orderId, string name) 
+        {
+            var orderDetailsQuery = from item in _context.Order where item.Id == orderId && item.Name == name select item;
+            Order order = orderDetailsQuery.First();
 
+            if (order != null)
+            {
+                return true;
+            }
+            return false;
+        }
 
-
-
+        
 
         //Fills basket with items of a previous order, enabling editing of order.
         //Need to stop convertion of objects ideally...
         public void SetEditBasket(int orderId) 
         {
+            
             var orderQuery = from item in _context.OrderItem where item.OrderId == orderId select item;
             List<OrderItem> orderItems = orderQuery.ToList();
             SetCookie("Basket", JsonSerializer.Serialize(orderItems.ConvertAll(x => new CookieBasketModel { ItemId = x.ItemId, Quantity = x.Quantity})));
@@ -392,5 +409,6 @@ namespace OrderingSystem.Controllers
             option.Expires = DateTime.Now.AddDays(-10);
             Response.Cookies.Append(key, "", option);
         }
+        
     }
 }

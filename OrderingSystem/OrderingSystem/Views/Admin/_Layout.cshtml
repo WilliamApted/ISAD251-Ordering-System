@@ -1,4 +1,5 @@
 ﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor;
+@Html.AntiForgeryToken()
 
 <!DOCTYPE html>
 <html lang="en">
@@ -25,18 +26,18 @@
                     <ul class="navbar-nav flex-grow-0">
                         @if (User.Identity.IsAuthenticated)
                         {
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Admin" asp-action="Index">Item List</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Admin" asp-action="AddItem">Add Item</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Admin" asp-action="ViewOrders">View Orders</a>
-                        </li>
-                        <li class="nav-item">
-                            <a onclick="Logout()" style="cursor:pointer;" class="nav-link text-light">Logout</a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Admin" asp-action="Index">Item List</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Admin" asp-action="AddItem">Add Item</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Admin" asp-action="ViewOrders">View Orders</a>
+                            </li>
+                            <li class="nav-item">
+                                <a onclick="Logout()" style="cursor:pointer;" class="nav-link text-light">Logout</a>
+                            </li>
                         }
                     </ul>
                 </div>

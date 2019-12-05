@@ -23,6 +23,7 @@ namespace OrderingSystem.Models.Database
         {
             modelBuilder.Entity<OrderItem>()
                 .HasKey(c => new { c.OrderId, c.ItemId});
+                
         }
     }
 }
