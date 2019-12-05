@@ -1,8 +1,11 @@
-﻿using OrderingSystem.Models.Database;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using OrderingSystem.Models.Database;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace OrderingSystem.Models.Ordering
@@ -28,12 +31,45 @@ namespace OrderingSystem.Models.Ordering
             this.Name = name;
         }
 
+        public OrderManage(string cookieBasket)
+        {
+            try
+            {
+                //Trys to desearlise the value held in the cookie, if success sets the item list.
+                OrderManage order = JsonSerializer.Deserialize<OrderManage>(cookieBasket);
+                Name = order.Name;
+                OrderId = order.OrderId;
+            }
+            catch
+            {   
+            }
+        }
         public void GetOrder(DatabaseContext context) 
         {
             using (context)
             {
                 order = context.Order.Where(findOrder => findOrder.Id == OrderId && findOrder.Name == Name).First();
             }
+        }
+
+        public void SaveEdit(BasketModel basket, DatabaseContext context) 
+        {
+            //Check order exists and is correct.
+            order = context.Order.Where(findOrder => findOrder.Id == OrderId && findOrder.Name == Name).First();
+
+            if (order != null)
+            {
+                //Delete current orderitems for the order
+                SqlParameter orderParam = new SqlParameter("@query", order.Id);
+                context.Database.ExecuteSqlRaw("DeleteOrderItems @query", orderParam);
+
+                context.OrderItem.AddRange(basket.items.ConvertAll(basketItem => new OrderItem { ItemId = basketItem.ItemId, Quantity = basketItem.Quantity, OrderId = order.Id }));
+                context.SaveChanges();
+
+
+            }
+            //Return success or fail.
+
         }
 
         //Gets list of all items in the basket with full details.
@@ -53,9 +89,21 @@ namespace OrderingSystem.Models.Ordering
             }
         }
 
+        public void CancelOrder(DatabaseContext context)
+        {
+            order = context.Order.Where(findOrder => findOrder.Id == OrderId && findOrder.Name == Name).First();
 
+            if (order != null)
+            {
+                //stored procedure to remove an order, so delete all orderItems with X id and then the order.
+                SqlParameter deleteQuery = new SqlParameter("@query", OrderId);
+                context.Database.ExecuteSqlRaw("DeleteOrder @query", deleteQuery);
+            }
+        }
 
-
-
+        public string GetSerialised()
+        {
+            return JsonSerializer.Serialize(new OrderManage(this.OrderId, this.Name));
+        }
     }
 }

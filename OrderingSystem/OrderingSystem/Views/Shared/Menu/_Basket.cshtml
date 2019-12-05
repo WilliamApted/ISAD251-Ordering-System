@@ -1,4 +1,4 @@
-﻿@model List<BasketItemModel>
+﻿@model List<ItemDetailsModel>
 
 <!-- Used for showing and hidding the current order items on mobile -->
 <div class="fixed-bottom d-sm-none">
@@ -24,7 +24,7 @@
         </div>
         <ul class="list-group list-group-flush overflow-auto">
             <!--Will put all the basket/order items here-->
-            @foreach (BasketItemModel basketItem in Model)
+            @foreach (ItemDetailsModel basketItem in Model)
             {
                 @await Html.PartialAsync("/Views/Shared/Menu/_BasketItem.cshtml", basketItem);
             }

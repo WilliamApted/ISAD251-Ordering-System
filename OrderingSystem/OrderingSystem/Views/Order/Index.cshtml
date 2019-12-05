@@ -5,12 +5,5 @@
 @await Html.PartialAsync("/Views/Shared/Menu/_Menu.cshtml", ViewData["menu"])
 
     <div id="basket">
-        @if ((bool)ViewData["editing"])
-        {
-            @await Html.PartialAsync("/Views/Shared/Menu/_EditBasket.cshtml", ViewData["basket"])
-        }
-        else
-        {
-            @await Html.PartialAsync("/Views/Shared/Menu/_Basket.cshtml", ViewData["basket"])
-        }
+        @await Html.PartialAsync("/Views/Shared/Menu/_Basket.cshtml", ViewData["basket"])
     </div>

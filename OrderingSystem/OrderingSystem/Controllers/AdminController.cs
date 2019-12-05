@@ -68,9 +68,9 @@ namespace OrderingSystem.Controllers
             return PartialView("/Views/Shared/Admin/_OrderDetails.cshtml", GetItemList(orderItems));
         }
 
-        public List<BasketItemModel> GetItemList(List<OrderItem> orderItems)
+        public List<ItemDetailsModel> GetItemList(List<OrderItem> orderItems)
         {
-            List<BasketItemModel> itemDetails = new List<BasketItemModel>();
+            List<ItemDetailsModel> itemDetails = new List<ItemDetailsModel>();
 
             foreach (OrderItem item in orderItems)
             {
@@ -78,7 +78,7 @@ namespace OrderingSystem.Controllers
                 var menuQuery = from tempitem in _context.Item where tempitem.Id == item.ItemId select tempitem;
                 Item items = menuQuery.First();
                 //Adds the Basket Item model to the list
-                itemDetails.Add(new BasketItemModel() { ItemId = item.ItemId, Name = items.Name, Quantity = item.Quantity, Price = items.Price, ImgUrl = items.ImageUrl });
+                itemDetails.Add(new ItemDetailsModel() { ItemId = item.ItemId, Name = items.Name, Quantity = item.Quantity, Price = items.Price, ImgUrl = items.ImageUrl });
             }
 
             return itemDetails;

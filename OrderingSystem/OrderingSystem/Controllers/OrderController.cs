@@ -33,7 +33,7 @@ namespace OrderingSystem.Controllers
             else 
                 ViewData["editing"] = false;
 
-            ViewData["basket"] = GetBasketItemList(GetBasketList());
+            ViewData["basket"] = new BasketModel(Request.Cookies["Basket"]).GetItemDetails(_context);
             
             return View();
         }
@@ -55,17 +55,17 @@ namespace OrderingSystem.Controllers
 
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public IActionResult ViewOrder(OrderManage order)
+        public IActionResult ViewOrder(OrderManage orderDetail)
         {
             if (ModelState.IsValid) 
             {
-                order.GetOrder(_context);
-                if(order.order != null) 
+                orderDetail.GetOrder(_context);
+                if(orderDetail.order != null) 
                 {
-                    ViewData["OrderDetails"] = order.GetItemDetails(_context);
-                    ViewData["OrderName"] = order.order.Name;
-                    ViewData["OrderNumber"] = order.order.Id;
-                    ViewData["OrderDate"] = order.order.dateTime;
+                    ViewData["OrderDetails"] = orderDetail.GetItemDetails(_context);
+                    ViewData["OrderName"] = orderDetail.order.Name;
+                    ViewData["OrderNumber"] = orderDetail.order.Id;
+                    ViewData["OrderDate"] = orderDetail.order.dateTime;
                     return View("ViewOrderList");
                 }
             }
@@ -80,95 +80,98 @@ namespace OrderingSystem.Controllers
             OrderManage order = new OrderManage(orderId, name);
             order.GetOrder(_context);
 
+            //Ensure order exists... should return error if not!
             if (order.order != null)
             {
                 BasketModel basket = new BasketModel();
                 basket.SetToOrder(_context, order.OrderId);
-                CookieManager.SetCookie("Basket", basket.GetSerialised(), Response); 
+                CookieManager.SetCookie("Basket", basket.GetSerialised(), Response);
+                CookieManager.SetCookie("EditOrder", order.GetSerialised(), Response);
             }
 
             return RedirectToAction("Index");
         }
 
-
-
-
-
-
-
-
-        //Get order items, put into basket, go to menu.      Checks the order exists first.
-        [HttpPost]
-        //[ValidateAntiForgeryToken]
-        public IActionResult EditOrder1(int orderId, string name)
-        {
-            if (CheckOrderExists(orderId, name))
-            {
-                //Return page to edit order, fill backet with previous order items. Store id of the order etc to then save changes. 
-                ViewOrderModel orderModel = new ViewOrderModel() { Name = name, OrderNumber = orderId };
-                SetCookie("EditOrder", JsonSerializer.Serialize(orderModel));
-
-                SetEditBasket(orderId);
-          
-                //Response.Cookies.Delete("Basket");
-
-            }
-            return RedirectToAction("Index");
-        }
-
-        //Deletes all previous order items, then saves order basket.     Checks order exists first. 
         [HttpPost]
         //[ValidateAntiForgeryToken]
         public IActionResult SaveEditOrder()
         {
-            ViewOrderModel orderInfo = JsonSerializer.Deserialize<ViewOrderModel>(Request.Cookies["EditOrder"]);
+            OrderManage order = new OrderManage(Request.Cookies["EditOrder"]);
+            order.SaveEdit(new BasketModel(Request.Cookies["Basket"]), _context);
 
-            if (CheckOrderExists(orderInfo.OrderNumber, orderInfo.Name))
-            {
-                SqlParameter param1 = new SqlParameter("@query", orderInfo.OrderNumber);
-                _context.Database.ExecuteSqlRaw("DeleteOrderItems @query", param1);
-
-                List<CookieBasketModel> basket = GetBasketList();
-
-                foreach (CookieBasketModel item in basket)
-                {
-                    _context.OrderItem.Add(new OrderItem() { ItemId = item.ItemId, Quantity = item.Quantity, OrderId = orderInfo.OrderNumber });
-                }
-                _context.SaveChanges();
-                SetCookie("Basket", "");
-                RemoveCookie("EditOrder");
-            }
+            //If successful...
+            CookieManager.RemoveCookie("Basket", Response);
+            CookieManager.RemoveCookie("EditOrder", Response);
 
             return View("EditOrderComplete");
-
-
         }
-     
-        //Deletes the order with stored procedure.           First checks the order name/id correct and it exists.
+
         [HttpPost]
         //[ValidateAntiForgeryToken]
         public IActionResult CancelOrder(int orderId, string name)
         {
-            try
-            {
-                var orderDetailsQuery = from item in _context.Order where item.Id == orderId && item.Name == name select item;
-                Order order = orderDetailsQuery.First();
+            OrderManage order = new OrderManage(orderId, name);
+            order.CancelOrder(_context);
 
-                if (order != null)
-                {
-                    //stored procedure to remove an order, so delete all orderItems with X id and then the order.
-                    SqlParameter param1 = new SqlParameter("@query", orderId);
-                    _context.Database.ExecuteSqlRaw("DeleteOrder @query", param1);
-                    //return confirmation of deletion.
-                    return RedirectToAction("ViewOrder");
-                }
-            }
-            catch (Exception e)
-            { //Error here? Or make sure now error 
-            }
-            //return delete error
-            return View("Index");
+            //Show order canceled message
+
+            return RedirectToAction("ViewOrder");
         }
+
+        //Loads order comfirmation page
+        public IActionResult ConfirmOrder()
+        {
+            BasketModel basket = new BasketModel(Request.Cookies["Basket"]);
+            ViewData["basket"] = basket;
+            return View();
+        }
+
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
+        public IActionResult ConfirmOrder(OrderConfirmation order)
+        {
+            if (ModelState.IsValid) 
+            {
+                BasketModel basket = new BasketModel(Request.Cookies["Basket"]);
+                order.NewOrder(basket, _context);
+
+                CookieManager.RemoveCookie("Basket", Response);
+
+                return View("OrderComplete");
+            }
+
+            return RedirectToAction("ConfirmOrder");
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /*
+         * 
+         * 
+         *         @if ((bool)ViewData["editing"])
+        {
+            @await Html.PartialAsync("/Views/Shared/Menu/_EditBasket.cshtml", ViewData["basket"])
+        }
+        else
+        {
 
         //Creates new Order row, then adds OrderItems. Returns order complete.   
         [HttpPost]
@@ -224,14 +227,7 @@ namespace OrderingSystem.Controllers
             }
         }
 
-        //Loads order comfirmation page
-        public IActionResult ConfirmOrder()
-        {
-            List<CookieBasketModel> basket = GetBasketList();
-            ViewData["basket"] = GetBasketItemList(basket);
-            ViewData["total"] = GetBasketTotal(basket);
-            return View();
-        }
+
 
         //Checks an order exists in the database with the provided Id and Name.
         public bool CheckOrderExists(int orderId, string name) 
@@ -274,11 +270,80 @@ namespace OrderingSystem.Controllers
 
 
 
+        //Deletes the order with stored procedure.           First checks the order name/id correct and it exists.
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
+        public IActionResult CancelOrder(int orderId, string name)
+        {
+            try
+            {
+                var orderDetailsQuery = from item in _context.Order where item.Id == orderId && item.Name == name select item;
+                Order order = orderDetailsQuery.First();
+
+                if (order != null)
+                {
+                    //stored procedure to remove an order, so delete all orderItems with X id and then the order.
+                    SqlParameter param1 = new SqlParameter("@query", orderId);
+                    _context.Database.ExecuteSqlRaw("DeleteOrder @query", param1);
+                    //return confirmation of deletion.
+                    return RedirectToAction("ViewOrder");
+                }
+            }
+            catch (Exception e)
+            { //Error here? Or make sure now error 
+            }
+            //return delete error
+            return View("Index");
+        }
 
 
+        //Deletes all previous order items, then saves order basket.     Checks order exists first. 
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
+        public IActionResult SaveEditOrder()
+        {
+            ViewOrderModel orderInfo = JsonSerializer.Deserialize<ViewOrderModel>(Request.Cookies["EditOrder"]);
+
+            if (CheckOrderExists(orderInfo.OrderNumber, orderInfo.Name))
+            {
+                SqlParameter param1 = new SqlParameter("@query", orderInfo.OrderNumber);
+                _context.Database.ExecuteSqlRaw("DeleteOrderItems @query", param1);
+
+                List<CookieBasketModel> basket = GetBasketList();
+
+                foreach (CookieBasketModel item in basket)
+                {
+                    _context.OrderItem.Add(new OrderItem() { ItemId = item.ItemId, Quantity = item.Quantity, OrderId = orderInfo.OrderNumber });
+                }
+                _context.SaveChanges();
+                SetCookie("Basket", "");
+                RemoveCookie("EditOrder");
+            }
+
+            return View("EditOrderComplete");
 
 
+        }
 
+
+        //Get order items, put into basket, go to menu.      Checks the order exists first.
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
+        public IActionResult EditOrder1(int orderId, string name)
+        {
+            if (CheckOrderExists(orderId, name))
+            {
+                //Return page to edit order, fill backet with previous order items. Store id of the order etc to then save changes. 
+                ViewOrderModel orderModel = new ViewOrderModel() { Name = name, OrderNumber = orderId };
+                SetCookie("EditOrder", JsonSerializer.Serialize(orderModel));
+
+                SetEditBasket(orderId);
+
+                //Response.Cookies.Delete("Basket");
+
+            }
+            return RedirectToAction("Index");
+        }
 
 
         //Gets Order Details, List of order items.   Checks the order exists first.
@@ -490,5 +555,7 @@ namespace OrderingSystem.Controllers
 
             return itemDetails;
         }
+
+    */
     }
 }
