@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OrderingSystem.Models.Database;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,5 +13,20 @@ namespace OrderingSystem.Models.Ordering
         public string ImgUrl { get; set; }
         public decimal Price { get; set; }
         public int Quantity { get; set; }
+
+
+        public ItemDetailsModel() 
+        {
+        
+        }
+
+        public ItemDetailsModel(Item item, int quantity) 
+        {
+            this.ItemId = item.Id;
+            this.Name = item.Name;
+            this.ImgUrl = item.ImageUrl;
+            this.Price = item.Price;
+            this.Quantity = quantity;
+        }
     }
 }

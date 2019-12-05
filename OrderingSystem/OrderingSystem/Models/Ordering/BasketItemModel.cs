@@ -9,5 +9,15 @@ namespace OrderingSystem.Models.Ordering
     {
         public int ItemId { get; set; }
         public int Quantity { get; set; }
+
+        public BasketItemModel() 
+        {
+        
+        }       
+        public BasketItemModel(int itemId, int quantity) 
+        {
+            this.ItemId = itemId;
+            this.Quantity = quantity;
+        }
     }
 }

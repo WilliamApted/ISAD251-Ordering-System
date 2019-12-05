@@ -18,7 +18,28 @@ namespace OrderingSystem.Controllers
         {
             _context = context;
         }
-        
-       
+
+
+        public IActionResult AddToBasket(int itemId)
+        {
+            //Get the value from the Basket cookie, add item, then set cookie again.
+            BasketModel basket = new BasketModel(Request.Cookies["Basket"]);
+            basket.AddItem(itemId);
+            CookieManager.SetCookie("Basket", basket.GetSerialised(), Response);
+            
+            //Return partial view of basket.
+            return PartialView("/Views/Shared/Menu/_Basket.cshtml", basket);
+        }
+
+        public IActionResult RemoveFromBasket(int itemId)
+        {
+            //Get the value from the Basket cookie, remove item, then set cookie again.
+            BasketModel basket = new BasketModel(Request.Cookies["Basket"]);
+            basket.RemoveItem(itemId);
+            CookieManager.SetCookie("Basket", basket.GetSerialised(), Response);
+
+            //Return partial view of basket.
+            return PartialView("/Views/Shared/Menu/_Basket.cshtml", basket);
+        }
     }
 }
