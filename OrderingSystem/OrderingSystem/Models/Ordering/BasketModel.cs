@@ -63,7 +63,7 @@ namespace OrderingSystem.Models.Ordering
         //Calculates the total basket cost
         public decimal GetTotal(DatabaseContext context) 
         {
-            using (context)
+            //using (context)
             {
                 decimal total = 0;
                 foreach (BasketItemModel basketItem in items)
@@ -78,7 +78,7 @@ namespace OrderingSystem.Models.Ordering
         //Gets list of all items in the basket with full details.
         public List<ItemDetailsModel> GetItemDetails(DatabaseContext context)
         {
-            using (context)
+            //using (context)
             {
                 List<ItemDetailsModel> itemDetails = new List<ItemDetailsModel>();
 
@@ -95,7 +95,7 @@ namespace OrderingSystem.Models.Ordering
         //Sets the basket to that of a placed order. Used for editing an order.
         public void SetToOrder(DatabaseContext context, int orderId) 
         {
-            using (context)
+            //using (context)
             {
                 List<OrderItem> orderItems = context.OrderItem.Where(item => item.OrderId == orderId).ToList();
                 items = orderItems.ConvertAll(basketItem => new BasketItemModel { ItemId = basketItem.ItemId, Quantity = basketItem.Quantity });

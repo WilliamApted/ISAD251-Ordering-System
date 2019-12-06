@@ -122,7 +122,8 @@ namespace OrderingSystem.Controllers
         public IActionResult ConfirmOrder()
         {
             BasketModel basket = new BasketModel(Request.Cookies["Basket"]);
-            ViewData["basket"] = basket;
+            ViewData["basket"] = basket.GetItemDetails(_context);
+            ViewData["total"] = basket.GetTotal(_context);
             return View();
         }
 
@@ -133,9 +134,11 @@ namespace OrderingSystem.Controllers
             if (ModelState.IsValid) 
             {
                 BasketModel basket = new BasketModel(Request.Cookies["Basket"]);
-                order.NewOrder(basket, _context);
-
+                int orderId = order.NewOrder(basket, _context);
                 CookieManager.RemoveCookie("Basket", Response);
+
+                ViewData["OrderNo"] = orderId;
+                ViewData["OrderName"] = order.Name;
 
                 return View("OrderComplete");
             }

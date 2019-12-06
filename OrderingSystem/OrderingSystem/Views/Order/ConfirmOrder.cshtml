@@ -1,4 +1,4 @@
-﻿@model ConfirmOrderModel
+﻿@model OrderConfirmation
 
 @{
     ViewData["Title"] = "Confirm Order";
@@ -38,7 +38,7 @@
         </div>
     </div>
 
-    @foreach (BasketItemModel item in (List<BasketItemModel>)ViewData["basket"])
+    @foreach (ItemDetailsModel item in (List<ItemDetailsModel>)ViewData["basket"])
     {
         @await Html.PartialAsync("/Views/Shared/Order/_ConfirmItem.cshtml", item);
     }

@@ -46,7 +46,7 @@ namespace OrderingSystem.Models.Ordering
         }
         public void GetOrder(DatabaseContext context) 
         {
-            using (context)
+            //using (context)
             {
                 order = context.Order.Where(findOrder => findOrder.Id == OrderId && findOrder.Name == Name).First();
             }
@@ -65,8 +65,6 @@ namespace OrderingSystem.Models.Ordering
 
                 context.OrderItem.AddRange(basket.items.ConvertAll(basketItem => new OrderItem { ItemId = basketItem.ItemId, Quantity = basketItem.Quantity, OrderId = order.Id }));
                 context.SaveChanges();
-
-
             }
             //Return success or fail.
 
@@ -75,7 +73,7 @@ namespace OrderingSystem.Models.Ordering
         //Gets list of all items in the basket with full details.
         public List<ItemDetailsModel> GetItemDetails(DatabaseContext context)
         {
-            using (context)
+            //using (context)
             {
                 List<ItemDetailsModel> itemDetails = new List<ItemDetailsModel>();
 

@@ -28,7 +28,7 @@ namespace OrderingSystem.Controllers
             CookieManager.SetCookie("Basket", basket.GetSerialised(), Response);
             
             //Return partial view of basket.
-            return PartialView("/Views/Shared/Menu/_Basket.cshtml", basket);
+            return PartialView("/Views/Shared/Menu/_Basket.cshtml", basket.GetItemDetails(_context));
         }
 
         public IActionResult RemoveFromBasket(int itemId)
@@ -39,7 +39,7 @@ namespace OrderingSystem.Controllers
             CookieManager.SetCookie("Basket", basket.GetSerialised(), Response);
 
             //Return partial view of basket.
-            return PartialView("/Views/Shared/Menu/_Basket.cshtml", basket);
+            return PartialView("/Views/Shared/Menu/_Basket.cshtml", basket.GetItemDetails(_context));
         }
     }
 }

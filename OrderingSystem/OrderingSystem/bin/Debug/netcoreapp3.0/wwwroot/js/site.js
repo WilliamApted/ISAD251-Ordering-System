@@ -1,7 +1,7 @@
 ﻿function AddToBasket($itemId) {
     $.ajax({
         type: "post",
-        url: '/Order/AddToBasket',
+        url: '/Basket/AddToBasket',
         data: { itemId: $itemId },
         success: function (data) {
             $("#basket").html(data);
@@ -15,7 +15,7 @@
 function RemoveFromBasket($itemId) {
     $.ajax({
         type: "post",
-        url: '/Order/RemoveFromBasket',
+        url: '/Basket/RemoveFromBasket',
         data: { itemId: $itemId },
         success: function (data) {
             $("#basket").html(data);

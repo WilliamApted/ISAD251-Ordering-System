@@ -22,7 +22,7 @@ namespace OrderingSystem.Models.Ordering
         }
 
         //Confirm order here
-        public void NewOrder(BasketModel basket, DatabaseContext context)
+        public int NewOrder(BasketModel basket, DatabaseContext context)
         {
             Order newOrder = new Order() { Name = this.Name, Table = this.TableNumber, dateTime = DateTime.Now };
             context.Order.Add(newOrder);
@@ -30,6 +30,7 @@ namespace OrderingSystem.Models.Ordering
 
             context.OrderItem.AddRange(basket.items.ConvertAll(basketItem => new OrderItem { ItemId = basketItem.ItemId, Quantity = basketItem.Quantity, OrderId = newOrder.Id }));
             context.SaveChanges();
+            return newOrder.Id;
         }
 
     }

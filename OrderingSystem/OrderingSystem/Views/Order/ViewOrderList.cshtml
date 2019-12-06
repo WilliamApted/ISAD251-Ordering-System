@@ -30,7 +30,7 @@
         </div>
     </div>
 
-    @foreach (BasketItemModel item in (List<BasketItemModel>)ViewData["OrderDetails"])
+    @foreach (ItemDetailsModel item in (List<ItemDetailsModel>)ViewData["OrderDetails"])
     {
     @await Html.PartialAsync("/Views/Shared/Order/_ConfirmItem.cshtml", item);
     }
