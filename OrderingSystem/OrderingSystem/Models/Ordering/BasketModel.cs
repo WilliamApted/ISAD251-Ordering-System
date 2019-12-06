@@ -107,5 +107,13 @@ namespace OrderingSystem.Models.Ordering
         {
             return JsonSerializer.Serialize(this);
         }
+
+        public static bool IsEditing(string cookie) 
+        {
+            if (cookie != null)
+                return true;
+            else
+                return false;
+        }
     }
 }

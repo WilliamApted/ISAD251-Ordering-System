@@ -74,13 +74,11 @@ namespace OrderingSystem.Controllers
 
             foreach (OrderItem item in orderItems)
             {
-                //Perhaps use stored procedure to get this...
                 var menuQuery = from tempitem in _context.Item where tempitem.Id == item.ItemId select tempitem;
                 Item items = menuQuery.First();
                 //Adds the Basket Item model to the list
                 itemDetails.Add(new ItemDetailsModel() { ItemId = item.ItemId, Name = items.Name, Quantity = item.Quantity, Price = items.Price, ImgUrl = items.ImageUrl });
             }
-
             return itemDetails;
         }
 
@@ -89,7 +87,6 @@ namespace OrderingSystem.Controllers
         public IActionResult EditItemRequest(int itemId)
         {
             Item item = _context.Item.First(select => select.Id == itemId);
-
             return View("EditItem", new ItemModel(item));
         }
 
@@ -100,9 +97,7 @@ namespace OrderingSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                Item item = _context.Item.First(select => select.Id == editItem.Id);
-                item.UpdateModel(editItem);
-                _context.SaveChanges();
+                editItem.Update(_context);
                 return RedirectToAction("Index");
             }
             else 
@@ -125,9 +120,8 @@ namespace OrderingSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                Item item = new Item(newItem);
-                _context.Item.Add(item);
-                _context.SaveChanges();
+                newItem.Add(_context);
+
                 //Return some feedback of success
                 return View();
             }
@@ -148,7 +142,6 @@ namespace OrderingSystem.Controllers
                     var claims = new List<Claim> { new Claim(ClaimTypes.Name, "Admin") };
                     var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
-
                     return RedirectToAction("Index");
 
                 } else {
@@ -167,7 +160,6 @@ namespace OrderingSystem.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-
             return RedirectToAction("Index", "Admin");
         }
     }

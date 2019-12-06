@@ -36,5 +36,18 @@ namespace OrderingSystem.Models.AdminAccount
             Category = item.Category;
             Available = item.Available;        
         }
+        
+        public void Add(DatabaseContext context) 
+        {
+            context.Item.Add(new Item(this));
+            context.SaveChanges();
+        }
+
+        public void Update(DatabaseContext context) 
+        {
+            Item item = context.Item.First(select => select.Id == Id);
+            item.UpdateModel(this);
+            context.SaveChanges();
+        }
     }
 }

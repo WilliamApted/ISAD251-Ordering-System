@@ -26,13 +26,7 @@ namespace OrderingSystem.Controllers
         public IActionResult Index()
         {
             ViewData["menu"] = GetMenuItems();
-
-            //Should be a call to get the correct basket type...
-            if(Request.Cookies["EditOrder"] != null) 
-                ViewData["editing"] = true; 
-            else 
-                ViewData["editing"] = false;
-
+            ViewData["editing"] = BasketModel.IsEditing(Request.Cookies["EditOrder"]);
             ViewData["basket"] = new BasketModel(Request.Cookies["Basket"]).GetItemDetails(_context);
             
             return View();

@@ -31,7 +31,14 @@
         </ul>
         <div class="card-body"></div>
         <div class="card-footer">
+            @if ((bool)ViewData["editing"] == true)
+            {
+                <button onclick="SaveOrder()" class="btn btn-primary btn-block">Save changes</button>
+            }
+            else
+            {
             <a asp-controller="Order" asp-action="ConfirmOrder" class="btn btn-primary btn-block">Confirm Order</a>
+            }
         </div>
     </div>
 </div>
