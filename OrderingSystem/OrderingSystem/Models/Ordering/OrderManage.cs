@@ -46,10 +46,7 @@ namespace OrderingSystem.Models.Ordering
         }
         public void GetOrder(DatabaseContext context) 
         {
-            //using (context)
-            {
-                order = context.Order.Where(findOrder => findOrder.Id == OrderId && findOrder.Name == Name).First();
-            }
+            order = context.Order.Where(findOrder => findOrder.Id == OrderId && findOrder.Name == Name).First();
         }
 
         public void SaveEdit(BasketModel basket, DatabaseContext context) 

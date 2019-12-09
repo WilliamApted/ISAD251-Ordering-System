@@ -1,6 +1,6 @@
-﻿@model List<BasketItemModel>
+﻿@model List<ItemDetailsModel>
 
-@foreach (BasketItemModel item in Model)
+@foreach (ItemDetailsModel item in Model)
 {
     @await Html.PartialAsync("/Views/Shared/Order/_ConfirmItem.cshtml", item);
 }

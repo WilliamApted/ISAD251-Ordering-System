@@ -63,43 +63,34 @@ namespace OrderingSystem.Models.Ordering
         //Calculates the total basket cost
         public decimal GetTotal(DatabaseContext context) 
         {
-            //using (context)
+            decimal total = 0;
+            foreach (BasketItemModel basketItem in items)
             {
-                decimal total = 0;
-                foreach (BasketItemModel basketItem in items)
-                {
-                    Item itemDetail = context.Item.Where(item => item.Id == basketItem.ItemId).First();
-                    total = total + basketItem.Quantity * itemDetail.Price;
-                }
-                return total;
+                Item itemDetail = context.Item.Where(item => item.Id == basketItem.ItemId).First();
+                total = total + basketItem.Quantity * itemDetail.Price;
             }
+            return total;
         }
 
         //Gets list of all items in the basket with full details.
         public List<ItemDetailsModel> GetItemDetails(DatabaseContext context)
         {
-            //using (context)
-            {
-                List<ItemDetailsModel> itemDetails = new List<ItemDetailsModel>();
+            List<ItemDetailsModel> itemDetails = new List<ItemDetailsModel>();
 
-                foreach (BasketItemModel basketItem in items)
-                {
-                    //Get the Item from the database - create new object to hold details
-                    Item itemDetail = context.Item.Where(item => item.Id == basketItem.ItemId).First();
-                    itemDetails.Add(new ItemDetailsModel(itemDetail, basketItem.Quantity));
-                }
-                return itemDetails;
+            foreach (BasketItemModel basketItem in items)
+            {
+                //Get the Item from the database - create new object to hold details
+                Item itemDetail = context.Item.Where(item => item.Id == basketItem.ItemId).First();
+                itemDetails.Add(new ItemDetailsModel(itemDetail, basketItem.Quantity));
             }
+            return itemDetails;
         }
 
         //Sets the basket to that of a placed order. Used for editing an order.
         public void SetToOrder(DatabaseContext context, int orderId) 
         {
-            //using (context)
-            {
-                List<OrderItem> orderItems = context.OrderItem.Where(item => item.OrderId == orderId).ToList();
-                items = orderItems.ConvertAll(basketItem => new BasketItemModel { ItemId = basketItem.ItemId, Quantity = basketItem.Quantity });
-            }
+            List<OrderItem> orderItems = context.OrderItem.Where(item => item.OrderId == orderId).ToList();
+            items = orderItems.ConvertAll(basketItem => new BasketItemModel { ItemId = basketItem.ItemId, Quantity = basketItem.Quantity });
         }
 
         //Serialises the basket so it can be stored in the cookie.

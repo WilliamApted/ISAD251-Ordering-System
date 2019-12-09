@@ -27,11 +27,14 @@ namespace OrderingSystem.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 //Get all items
-                var menuQuery = from item in _context.Item select item;
-                List<Item> items = menuQuery.ToList();
-                ViewData["menu"] = items;
+                using (_context)
+                {
+                    var menuQuery = from item in _context.Item select item;
+                    List<Item> items = menuQuery.ToList();
+                    ViewData["menu"] = items;
 
-                return View();
+                    return View();
+                }
             }
             else 
             {
@@ -49,23 +52,28 @@ namespace OrderingSystem.Controllers
         public IActionResult ViewOrders()
         {
             //Get list of all orders, basic details - ID, Name, Table Number, Time...
-            var orderQuery = from order in _context.Order select order;
-            orderQuery = orderQuery.OrderByDescending(orderby => orderby.Id);
-            List<Order> items = orderQuery.ToList();
+            using (_context)
+            {
+                var orderQuery = from order in _context.Order select order;
+                orderQuery = orderQuery.OrderByDescending(orderby => orderby.Id);
+                List<Order> items = orderQuery.ToList();
 
-            return View(items);
+                return View(items);
+            }
         }
 
         [Authorize]
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public IActionResult ViewOrderDetails(int orderId)
         {
-            int example = orderId;
-            var orderQuery = from orderSearch in _context.OrderItem where orderSearch.OrderId == orderId select orderSearch;
-            List<OrderItem> orderItems = orderQuery.ToList();
-                                             
-            return PartialView("/Views/Shared/Admin/_OrderDetails.cshtml", GetItemList(orderItems));
+            using (_context)
+            {
+                int example = orderId;
+                var orderQuery = from orderSearch in _context.OrderItem where orderSearch.OrderId == orderId select orderSearch;
+                List<OrderItem> orderItems = orderQuery.ToList();
+
+                return PartialView("/Views/Shared/Admin/_OrderDetails.cshtml", GetItemList(orderItems));
+            }
         }
 
         public List<ItemDetailsModel> GetItemList(List<OrderItem> orderItems)
@@ -86,8 +94,11 @@ namespace OrderingSystem.Controllers
         [Authorize]
         public IActionResult EditItemRequest(int itemId)
         {
-            Item item = _context.Item.First(select => select.Id == itemId);
-            return View("EditItem", new ItemModel(item));
+            using (_context)
+            {
+                Item item = _context.Item.First(select => select.Id == itemId);
+                return View("EditItem", new ItemModel(item));
+            }
         }
 
         [Authorize]
@@ -95,16 +106,18 @@ namespace OrderingSystem.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult EditItem(ItemModel editItem)
         {
-            if (ModelState.IsValid)
+            using (_context)
             {
-                editItem.Update(_context);
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    editItem.Update(_context);
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return View();
+                }
             }
-            else 
-            {
-                return View();
-            }
-
         }
 
         [Authorize]
@@ -118,17 +131,20 @@ namespace OrderingSystem.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult AddItem(ItemModel newItem) 
         {
-            if (ModelState.IsValid)
+            using (_context)
             {
-                newItem.Add(_context);
+                if (ModelState.IsValid)
+                {
+                    newItem.Add(_context);
 
-                //Return some feedback of success
-                return View();
+                    //Return some feedback of success
+                    return View();
+                }
+                else
+                {
+                    return View();
+                }
             }
-            else 
-            {
-                return View();
-            }       
         }
 
         [HttpPost]
@@ -156,7 +172,6 @@ namespace OrderingSystem.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);

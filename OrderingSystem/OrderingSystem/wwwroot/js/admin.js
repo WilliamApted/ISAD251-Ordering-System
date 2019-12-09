@@ -4,7 +4,7 @@
     $.ajax({
         type: "post",
         url: '/Admin/ViewOrderDetails',
-        data: { orderId: $orderId },
+        data: { __RequestVerificationToken: gettoken(), orderId: $orderId },
         success: function (data) {
             $("#orderDetails" + $orderId).html(data);
         },
@@ -24,7 +24,7 @@ function EditItem($itemId) {
     $.post({
         type: "post",
         url: '/Admin/EditItemRequest',
-        data: { itemId: $itemId },
+        data: { __RequestVerificationToken: gettoken(), itemId: $itemId },
         success: function (data) {
             $(window.document.body).html(data)
         },

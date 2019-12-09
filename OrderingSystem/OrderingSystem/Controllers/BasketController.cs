@@ -19,6 +19,7 @@ namespace OrderingSystem.Controllers
             _context = context;
         }
 
+        [ValidateAntiForgeryToken]
         public IActionResult AddToBasket(int itemId)
         {
             //Get the value from the Basket cookie, add item, then set cookie again.
@@ -29,9 +30,13 @@ namespace OrderingSystem.Controllers
             ViewData["editing"] = BasketModel.IsEditing(Request.Cookies["EditOrder"]);
 
             //Return partial view of basket.
-            return PartialView("/Views/Shared/Menu/_Basket.cshtml", basket.GetItemDetails(_context));
+            using (_context)
+            {
+                return PartialView("/Views/Shared/Menu/_Basket.cshtml", basket.GetItemDetails(_context));
+            }
         }
 
+        [ValidateAntiForgeryToken]
         public IActionResult RemoveFromBasket(int itemId)
         {
             //Get the value from the Basket cookie, remove item, then set cookie again.
@@ -42,7 +47,10 @@ namespace OrderingSystem.Controllers
             ViewData["editing"] = BasketModel.IsEditing(Request.Cookies["EditOrder"]);
 
             //Return partial view of basket.
-            return PartialView("/Views/Shared/Menu/_Basket.cshtml", basket.GetItemDetails(_context));
+            using (_context)
+            {
+                return PartialView("/Views/Shared/Menu/_Basket.cshtml", basket.GetItemDetails(_context));
+            }
         }
     }
 }

@@ -2,7 +2,7 @@
     $.ajax({
         type: "post",
         url: '/Basket/AddToBasket',
-        data: { itemId: $itemId },
+        data: { __RequestVerificationToken: gettoken(), itemId: $itemId },
         success: function (data) {
             $("#basket").html(data);
         },
@@ -16,7 +16,7 @@ function RemoveFromBasket($itemId) {
     $.ajax({
         type: "post",
         url: '/Basket/RemoveFromBasket',
-        data: { itemId: $itemId },
+        data: { __RequestVerificationToken: gettoken(), itemId: $itemId },
         success: function (data) {
             $("#basket").html(data);
         },
@@ -30,7 +30,7 @@ function EditOrder($orderId, $name) {
     $.post({
         type: "post",
         url: '/Order/EditOrder',
-        data: { orderId: $orderId, name: $name },
+        data: { __RequestVerificationToken: gettoken(), orderId: $orderId, name: $name },
         success: function (data) {
             $(window.document.body).html(data)
         },
@@ -41,6 +41,7 @@ function SaveOrder() {
     $.post({
         type: "post",
         url: '/Order/SaveEditOrder',
+        data: { __RequestVerificationToken: gettoken() },
         success: function (data) {
             $(window.document.body).html(data)
         },
@@ -51,7 +52,7 @@ function CancelOrder($orderId, $name) {
     $.post({
         type: "post",
         url: '/Order/CancelOrder',
-        data: { orderId: $orderId, name: $name },
+        data: { __RequestVerificationToken: gettoken(), orderId: $orderId, name: $name },
         success: function (data) {
             $(window.document.body).html(data)
         },

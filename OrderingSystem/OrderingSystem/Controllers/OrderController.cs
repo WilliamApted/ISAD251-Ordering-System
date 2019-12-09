@@ -25,9 +25,12 @@ namespace OrderingSystem.Controllers
 
         public IActionResult Index()
         {
-            ViewData["menu"] = GetMenuItems();
-            ViewData["editing"] = BasketModel.IsEditing(Request.Cookies["EditOrder"]);
-            ViewData["basket"] = new BasketModel(Request.Cookies["Basket"]).GetItemDetails(_context);
+            using (_context)
+            {
+                ViewData["menu"] = GetMenuItems();
+                ViewData["editing"] = BasketModel.IsEditing(Request.Cookies["EditOrder"]);
+                ViewData["basket"] = new BasketModel(Request.Cookies["Basket"]).GetItemDetails(_context);
+            }
             
             return View();
         }
@@ -35,7 +38,6 @@ namespace OrderingSystem.Controllers
         //Gets all available menu items (Need to add filters?? Also when build api??)
         public List<Item> GetMenuItems()
         {
-            //Create database query - Only get available menu items.
             var menuQuery = from item in _context.Item where item.Available == true select item;
             List<Item> items = menuQuery.ToList();
             return items;
@@ -48,96 +50,114 @@ namespace OrderingSystem.Controllers
         }
 
         [HttpPost]
-        //[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public IActionResult ViewOrder(OrderManage orderDetail)
         {
-            if (ModelState.IsValid) 
+            using (_context)
             {
-                orderDetail.GetOrder(_context);
-                if(orderDetail.order != null) 
+                if (ModelState.IsValid)
                 {
-                    ViewData["OrderDetails"] = orderDetail.GetItemDetails(_context);
-                    ViewData["OrderName"] = orderDetail.order.Name;
-                    ViewData["OrderNumber"] = orderDetail.order.Id;
-                    ViewData["OrderDate"] = orderDetail.order.dateTime;
-                    return View("ViewOrderList");
+                    orderDetail.GetOrder(_context);
+                    if (orderDetail.order != null)
+                    {
+                        ViewData["OrderDetails"] = orderDetail.GetItemDetails(_context);
+                        ViewData["OrderName"] = orderDetail.order.Name;
+                        ViewData["OrderNumber"] = orderDetail.order.Id;
+                        ViewData["OrderDate"] = orderDetail.order.dateTime;
+                        return View("ViewOrderList");
+                    }
                 }
+                return View();
             }
-            return View();
         }
 
 
         [HttpPost]
-        //[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public IActionResult EditOrder(int orderId, string name)
         {
-            OrderManage order = new OrderManage(orderId, name);
-            order.GetOrder(_context);
-
-            //Ensure order exists... should return error if not!
-            if (order.order != null)
+            using (_context)
             {
-                BasketModel basket = new BasketModel();
-                basket.SetToOrder(_context, order.OrderId);
-                CookieManager.SetCookie("Basket", basket.GetSerialised(), Response);
-                CookieManager.SetCookie("EditOrder", order.GetSerialised(), Response);
-            }
+                OrderManage order = new OrderManage(orderId, name);
+                order.GetOrder(_context);
 
-            return RedirectToAction("Index");
+                //Ensure order exists... should return error if not!
+                if (order.order != null)
+                {
+                    BasketModel basket = new BasketModel();
+                    basket.SetToOrder(_context, order.OrderId);
+                    CookieManager.SetCookie("Basket", basket.GetSerialised(), Response);
+                    CookieManager.SetCookie("EditOrder", order.GetSerialised(), Response);
+                }
+
+                return RedirectToAction("Index");
+            }
         }
 
         [HttpPost]
-        //[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public IActionResult SaveEditOrder()
         {
-            OrderManage order = new OrderManage(Request.Cookies["EditOrder"]);
-            order.SaveEdit(new BasketModel(Request.Cookies["Basket"]), _context);
+            using (_context)
+            {
+                OrderManage order = new OrderManage(Request.Cookies["EditOrder"]);
+                order.SaveEdit(new BasketModel(Request.Cookies["Basket"]), _context);
 
-            //If successful...
-            CookieManager.RemoveCookie("Basket", Response);
-            CookieManager.RemoveCookie("EditOrder", Response);
+                //If successful...
+                CookieManager.RemoveCookie("Basket", Response);
+                CookieManager.RemoveCookie("EditOrder", Response);
 
-            return View("EditOrderComplete");
+                return View("EditOrderComplete");
+            }
         }
 
         [HttpPost]
-        //[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public IActionResult CancelOrder(int orderId, string name)
         {
-            OrderManage order = new OrderManage(orderId, name);
-            order.CancelOrder(_context);
+            using (_context)
+            {
+                OrderManage order = new OrderManage(orderId, name);
+                order.CancelOrder(_context);
 
-            //Show order canceled message
+                //Show order canceled message
 
-            return RedirectToAction("ViewOrder");
+                return RedirectToAction("ViewOrder");
+            }
         }
 
         //Loads order comfirmation page
         public IActionResult ConfirmOrder()
         {
-            BasketModel basket = new BasketModel(Request.Cookies["Basket"]);
-            ViewData["basket"] = basket.GetItemDetails(_context);
-            ViewData["total"] = basket.GetTotal(_context);
-            return View();
+            using (_context)
+            {
+                BasketModel basket = new BasketModel(Request.Cookies["Basket"]);
+                ViewData["basket"] = basket.GetItemDetails(_context);
+                ViewData["total"] = basket.GetTotal(_context);
+                return View();
+            }
         }
 
         [HttpPost]
-        //[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public IActionResult ConfirmOrder(OrderConfirmation order)
         {
-            if (ModelState.IsValid) 
+            using (_context)
             {
-                BasketModel basket = new BasketModel(Request.Cookies["Basket"]);
-                int orderId = order.NewOrder(basket, _context);
-                CookieManager.RemoveCookie("Basket", Response);
+                if (ModelState.IsValid)
+                {
+                    BasketModel basket = new BasketModel(Request.Cookies["Basket"]);
+                    int orderId = order.NewOrder(basket, _context);
+                    CookieManager.RemoveCookie("Basket", Response);
 
-                ViewData["OrderNo"] = orderId;
-                ViewData["OrderName"] = order.Name;
+                    ViewData["OrderNo"] = orderId;
+                    ViewData["OrderName"] = order.Name;
 
-                return View("OrderComplete");
+                    return View("OrderComplete");
+                }
+
+                return RedirectToAction("ConfirmOrder");
             }
-
-            return RedirectToAction("ConfirmOrder");
         }
 
 
