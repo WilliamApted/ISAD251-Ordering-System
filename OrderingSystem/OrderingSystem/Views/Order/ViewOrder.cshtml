@@ -12,14 +12,15 @@
                         <hr>
                         <div class="form-row mb-3">
                             <div class="col">
-                                <input type="text" asp-for="Name" class="form-control" placeholder="Name">
+                                <input type="text" asp-for="Name" class="form-control font-weight-bold" placeholder="Name">
                                 <span asp-validation-for="Name" class="text-danger"></span>
                             </div>
                             <div class="col">
-                                <input type="text" asp-for="OrderId" class="form-control" placeholder="Order Number">
+                                <input type="text" asp-for="OrderId" class="form-control font-weight-bold" placeholder="Order Number">
                                 <span asp-validation-for="OrderId" class="text-danger"></span>
                             </div>
                         </div>
+                        <div asp-validation-summary="ModelOnly" class="text-danger text-center"></div>
                         <div class="form-group text-center">
                             <button style="width:160px;" type="submit" class="btn btn-primary">View Order</button>
                         </div>

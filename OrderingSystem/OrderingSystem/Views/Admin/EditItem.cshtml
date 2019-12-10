@@ -7,28 +7,34 @@
 
 <form asp-action="EditItem" asp-controller="Admin">
 
-    <div asp-validation-summary="All"> </div>
+    <div asp-validation-summary="ModelOnly" class="text-danger"> </div>
 
-    <input asp-for="Id" class="form-control" placeholder="Name of item" readonly/>
+    <input asp-for="Id" class="form-control" placeholder="Name of item" readonly />
 
-    <label asp-for="Name">Name</label>
-    <input asp-for="Name" class="form-control" placeholder="Name of item" />
-    <span asp-validation-for="Name"> </span>
+    <div>
+        <label asp-for="Name" class="font-weight-bold">Name:</label>
+        <input asp-for="Name" class="form-control" placeholder="Name of item" />
+        <span asp-validation-for="Name" class="text-danger"> </span>
+    </div>
 
-    <label asp-for="Description">Description</label>
-    <input asp-for="Description" class="form-control" placeholder="Description" />
-    <span asp-validation-for="Description"> </span>
-
-    <label asp-for="Price">Price</label>
-    <input asp-for="Price" class="form-control" placeholder="Price" />
-    <span asp-validation-for="Price"> </span>
-
-    <label asp-for="ImageUrl">Image</label>
-    <input asp-for="ImageUrl" class="form-control" placeholder="Image url" />
-    <span asp-validation-for="ImageUrl"> </span>
+    <div>
+        <label asp-for="Description" class="font-weight-bold">Description:</label>
+        <input asp-for="Description" class="form-control" placeholder="Description" />
+        <span asp-validation-for="Description" class="text-danger"> </span>
+    </div>
+    <div>
+        <label asp-for="Price" class="font-weight-bold">Price:</label>
+        <input asp-for="Price" class="form-control" placeholder="Price" />
+        <span asp-validation-for="Price" class="text-danger"> </span>
+    </div>
+    <div>
+        <label asp-for="ImageUrl" class="font-weight-bold">Image:</label>
+        <input asp-for="ImageUrl" class="form-control" placeholder="Image url" />
+        <span asp-validation-for="ImageUrl" class="text-danger"> </span>
+    </div>
 
     <div class="form-group">
-        <label asp-for="Category">Category</label>
+        <label asp-for="Category" class="font-weight-bold">Category:</label>
         <select asp-for="Category" class="form-control">
             <option value="1">Drinks</option>
             <option value="2">Snacks</option>
@@ -38,7 +44,7 @@
     <div class="form-group">
         <div class="form-check">
             <input asp-for="Available" class="form-check-input" type="checkbox" id="gridCheck">
-            <label asp-for="Available" class="form-check-label" for="gridCheck">
+            <label asp-for="Available" class="form-check-label font-weight-bold" for="gridCheck">
                 Available (Unticking will withdraw from sale)
             </label>
         </div>

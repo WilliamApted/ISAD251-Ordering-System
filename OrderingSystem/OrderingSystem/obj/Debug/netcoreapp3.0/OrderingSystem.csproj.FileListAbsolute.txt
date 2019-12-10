@@ -105,6 +105,7 @@ C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\bin
 C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\bin\Debug\netcoreapp3.0\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\staticwebassets\OrderingSystem.StaticWebAssets.Manifest.cache
 C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\staticwebassets\OrderingSystem.StaticWebAssets.xml
+C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\OrderingSystem.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\OrderingSystem.RazorAssemblyInfo.cache
 C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\OrderingSystem.RazorAssemblyInfo.cs
 C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\OrderingSystem.AssemblyInfoInputs.cache
@@ -120,6 +121,7 @@ C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj
 C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\Razor\Views\Admin\_Layout.cshtml.g.cs
 C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\Razor\Views\Order\ConfirmOrder.cshtml.g.cs
 C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\Razor\Views\Order\EditOrder.cshtml.g.cs
+C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\Razor\Views\Order\EditOrderComplete.cshtml.g.cs
 C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\Razor\Views\Order\Index.cshtml.g.cs
 C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\Razor\Views\Order\OrderComplete.cshtml.g.cs
 C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\Razor\Views\Order\ViewOrder.cshtml.g.cs
@@ -141,6 +143,3 @@ C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj
 C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\OrderingSystem.csproj.CopyComplete
 C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\OrderingSystem.dll
 C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\OrderingSystem.pdb
-C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\Razor\Views\Order\EditOrderComplete.cshtml.g.cs
-C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\OrderingSystem.csprojAssemblyReference.cache
-C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Debug\netcoreapp3.0\OrderingSystem.MvcApplicationPartsAssemblyInfo.cache

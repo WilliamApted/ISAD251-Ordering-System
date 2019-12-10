@@ -75,6 +75,7 @@ namespace OrderingSystem.Controllers
                         return View("ViewOrderList");
                     }
                     //Add modelstate error here.
+                    ModelState.AddModelError(string.Empty, "Details do not match any order.");
                 }
                 return View();
             }
@@ -162,10 +163,10 @@ namespace OrderingSystem.Controllers
         {
             using (_context)
             {
+                BasketModel basket = new BasketModel(Request.Cookies["Basket"]);
                 if (ModelState.IsValid)
                 {
                     //gets the items from the basket cookie, then calling newOrder method.
-                    BasketModel basket = new BasketModel(Request.Cookies["Basket"]);
                     int orderId = order.NewOrder(basket, _context);
                     CookieManager.RemoveCookie("Basket", Response);
 
@@ -175,7 +176,11 @@ namespace OrderingSystem.Controllers
 
                     return View("OrderComplete");
                 }
-                return RedirectToAction("ConfirmOrder");
+
+                //Returning the confirm order view again with errors showing.
+                ViewData["basket"] = basket.GetItemDetails(_context);
+                ViewData["total"] = basket.GetTotal(_context);
+                return View();
             }
         }
     }

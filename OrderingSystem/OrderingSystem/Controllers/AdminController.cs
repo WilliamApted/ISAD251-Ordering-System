@@ -22,11 +22,12 @@ namespace OrderingSystem.Controllers
             _context = context;
         }
 
+        //Index page - Shows login page Or list of items.
         public IActionResult Index() 
         {
             if (User.Identity.IsAuthenticated)
             {
-                //Get all items
+                //Gets all the menu items
                 using (_context)
                 {
                     var menuQuery = from item in _context.Item select item;
@@ -38,20 +39,22 @@ namespace OrderingSystem.Controllers
             }
             else 
             {
-                //Show login here
+                //Shows the login page
                 return View("Login");
             }
         }
 
+        //Loads the login view.
         public IActionResult Login()
         {
             return View(new LoginModel());
         }
 
+        //Loads the view showing a list of placed orders.
         [Authorize]
         public IActionResult ViewOrders()
         {
-            //Get list of all orders, basic details - ID, Name, Table Number, Time...
+            //Get list of all orders, with basic details - ID, Name, Table Number, Time...
             using (_context)
             {
                 var orderQuery = from order in _context.Order select order;
@@ -62,6 +65,7 @@ namespace OrderingSystem.Controllers
             }
         }
 
+        //Gets the list of items associated with an order.
         [Authorize]
         [HttpPost]
         public IActionResult ViewOrderDetails(int orderId)
@@ -76,6 +80,7 @@ namespace OrderingSystem.Controllers
             }
         }
 
+        //Change this - use another function  
         public List<ItemDetailsModel> GetItemList(List<OrderItem> orderItems)
         {
             List<ItemDetailsModel> itemDetails = new List<ItemDetailsModel>();
@@ -90,7 +95,7 @@ namespace OrderingSystem.Controllers
             return itemDetails;
         }
 
-
+        //Loads the page to edit an item.
         [Authorize]
         public IActionResult EditItemRequest(int itemId)
         {
@@ -101,6 +106,7 @@ namespace OrderingSystem.Controllers
             }
         }
 
+        //Submits an update to an item.
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -120,12 +126,14 @@ namespace OrderingSystem.Controllers
             }
         }
 
+        //Loads page to add a new item.
         [Authorize]
         public IActionResult AddItem() 
         {
             return View();
         }
 
+        //Saves a new item.
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -147,20 +155,24 @@ namespace OrderingSystem.Controllers
             }
         }
 
+        //Checks the password and authenticates the admin.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginModel loginModel)
         {
             if (ModelState.IsValid)
             {
-                if (loginModel.Password == "examplePassword") 
+                //Just uses a hardcoded password for this case. 
+                if (loginModel.Password == "example") 
                 {
+                    //Creates the admin session
                     var claims = new List<Claim> { new Claim(ClaimTypes.Name, "Admin") };
                     var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
                     return RedirectToAction("Index");
 
                 } else {
+                    //Returns an invalid password error
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                     return View();
                 }
@@ -171,6 +183,7 @@ namespace OrderingSystem.Controllers
             }
         }
 
+        //Signs out the admin then returns back to the index.
         [HttpPost]
         public async Task<IActionResult> Logout()
         {

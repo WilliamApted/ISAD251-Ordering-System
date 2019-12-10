@@ -46,13 +46,13 @@ namespace OrderingSystem.Models.Ordering
         }
         public void GetOrder(DatabaseContext context) 
         {
-            order = context.Order.Where(findOrder => findOrder.Id == OrderId && findOrder.Name == Name).First();
+            order = context.Order.Where(findOrder => findOrder.Id == OrderId && findOrder.Name == Name).FirstOrDefault();
         }
 
         public void SaveEdit(BasketModel basket, DatabaseContext context) 
         {
             //Check order exists and is correct.
-            order = context.Order.Where(findOrder => findOrder.Id == OrderId && findOrder.Name == Name).First();
+            GetOrder(context);
 
             if (order != null)
             {
@@ -86,7 +86,7 @@ namespace OrderingSystem.Models.Ordering
 
         public void CancelOrder(DatabaseContext context)
         {
-            order = context.Order.Where(findOrder => findOrder.Id == OrderId && findOrder.Name == Name).First();
+            GetOrder(context);
 
             if (order != null)
             {

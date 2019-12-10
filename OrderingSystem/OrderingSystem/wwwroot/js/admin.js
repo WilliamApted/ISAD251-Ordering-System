@@ -35,8 +35,8 @@ function Logout() {
     $.post({
         type: "post",
         url: '/Admin/Logout',
-        success: function() {
-            window.location.reload()
+        success: function (data) {
+            $(window.document.body).html(data)
         },
     });
 }

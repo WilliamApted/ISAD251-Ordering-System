@@ -60,7 +60,7 @@ namespace OrderingSystem.Models.Ordering
 
         }
 
-        //Calculates the total basket cost
+        //Calculates the total basket cost.
         public decimal GetTotal(DatabaseContext context) 
         {
             decimal total = 0;

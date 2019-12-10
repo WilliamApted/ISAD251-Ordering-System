@@ -19,6 +19,7 @@ namespace OrderingSystem.Controllers
             _context = context;
         }
 
+        //Adds an item to the basket.
         [ValidateAntiForgeryToken]
         public IActionResult AddToBasket(int itemId)
         {
@@ -36,6 +37,7 @@ namespace OrderingSystem.Controllers
             }
         }
 
+        //Removes an item from the basket
         [ValidateAntiForgeryToken]
         public IActionResult RemoveFromBasket(int itemId)
         {
