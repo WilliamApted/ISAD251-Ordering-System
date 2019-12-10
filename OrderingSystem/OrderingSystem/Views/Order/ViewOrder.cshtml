@@ -11,18 +11,21 @@
                     <form method="post" asp-action="ViewOrder" asp-controller="Order">
                         <hr>
                         <div class="form-row mb-3">
-                            <div class="col">
-                                <input type="text" asp-for="Name" class="form-control font-weight-bold" placeholder="Name">
+                            <div class="col text-left">
+                                <label asp-for="Name" class="font-weight-bold">Name:</label>
+                                <input type="text" asp-for="Name" class="form-control" longdesc="Name associated with order." placeholder="Name">
                                 <span asp-validation-for="Name" class="text-danger"></span>
                             </div>
-                            <div class="col">
-                                <input type="text" asp-for="OrderId" class="form-control font-weight-bold" placeholder="Order Number">
+                            <div class="col text-left">
+                                <label asp-for="OrderId" class="font-weight-bold">Order number:</label>
+                                <input type="text" asp-for="OrderId" class="form-control" longdesc="Number associated with order." placeholder="Order Number">
                                 <span asp-validation-for="OrderId" class="text-danger"></span>
                             </div>
                         </div>
                         <div asp-validation-summary="ModelOnly" class="text-danger text-center"></div>
+                        <hr>
                         <div class="form-group text-center">
-                            <button style="width:160px;" type="submit" class="btn btn-primary">View Order</button>
+                            <button style="width:160px;" type="submit" class="btn btn-primary" longdesc="Click view order once name and order number provided.">View Order</button>
                         </div>
                     </form>
                 </div>

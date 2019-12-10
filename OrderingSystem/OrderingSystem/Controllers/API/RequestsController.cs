@@ -21,7 +21,8 @@ namespace OrderingSystem.Controllers.API
             _context = context;
         }
                
-        // GET: api/Menu
+        // GET : /requests/menu/
+        //Returns the all the menu items.
         [HttpGet("menu/")]
         public async Task<ActionResult<IEnumerable<Item>>> GetMenu()
         {
@@ -31,6 +32,8 @@ namespace OrderingSystem.Controllers.API
             }
         }
 
+        // GET : /requests/menu/{menu item id}
+        //Returns the details of a single menu item.
         [HttpGet("menu/{id}")]
         public async Task<ActionResult<Item>> Get(int id)
         {
@@ -47,7 +50,8 @@ namespace OrderingSystem.Controllers.API
             }
         }
 
-        // GET: api/Order
+        // GET : /requests/Order/
+        //Returns the list of all placed orders.
         [HttpGet("Order/")]
         public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
         {
@@ -57,7 +61,8 @@ namespace OrderingSystem.Controllers.API
             }
         }
 
-        // GET: api/Order/5
+        // GET : /requests/Order/{order id}
+        //Returns details on a specific order.
         [HttpGet("Order/{id}")]
         public async Task<ActionResult<ApiOrder>> GetOrder(int id)
         {
@@ -79,8 +84,10 @@ namespace OrderingSystem.Controllers.API
             return apiOrder;
         }
 
+        // POST : /requests/Order/
+        //Creates a new order
         [HttpPost("Order")]
-        public async Task<ActionResult<Category>> PostOrder(ApiOrder apiOrder)
+        public async Task<ActionResult<Category>> AddOrder(ApiOrder apiOrder)
         {
             _context.Order.Add(apiOrder.order);
             _context.OrderItem.AddRange(apiOrder.items);
@@ -90,20 +97,26 @@ namespace OrderingSystem.Controllers.API
             return CreatedAtAction("Order", new { id = apiOrder.order.Id }, apiOrder);
         }
 
-        // DELETE: api/Categories/5
+        // PUT : /requests/Order/
+        //Updates an existing order.
+        [HttpPut("Order")]
+        public async Task<ActionResult<Category>> UpdateOrder(ApiOrder apiOrder)
+        {
+            _context.Order.Add(apiOrder.order);
+            _context.OrderItem.AddRange(apiOrder.items);
+
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("Order", new { id = apiOrder.order.Id }, apiOrder);
+        }
+
+        // DELETE : /requests/Order/
+        //Deletes an order.
         [HttpDelete("Order/{id}")]
         public async Task<ActionResult<Category>> DeleteCategory(int id)
         {
-            var category = await _context.Category.FindAsync(id);
-            if (category == null)
-            {
-                return NotFound();
-            }
-
-            _context.Category.Remove(category);
-            await _context.SaveChangesAsync();
-
-            return category;
+        
+            return NotFound();
         }
 
 

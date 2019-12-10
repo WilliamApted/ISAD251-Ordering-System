@@ -17,10 +17,12 @@
                         <hr>
                         <div class="form-row">
                             <div class="col">
+                                <label asp-for="Name" class="font-weight-bold">Name:</label>
                                 <input type="text" asp-for="Name" class="form-control" placeholder="Name">
                                 <span asp-validation-for="Name" class="text-danger"></span>
                             </div>
                             <div class="col">
+                                <label asp-for="TableNumber" class="font-weight-bold">Table number:</label>
                                 <input type="text" asp-for="TableNumber" class="form-control" placeholder="Table Number">
                                 <span asp-validation-for="TableNumber" class="text-danger"></span>
                             </div>
