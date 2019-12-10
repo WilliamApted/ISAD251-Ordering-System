@@ -20,9 +20,7 @@ namespace OrderingSystem.Controllers.API
         {
             _context = context;
         }
-
-
-
+               
         // GET: api/Menu
         [HttpGet("menu/")]
         public async Task<ActionResult<IEnumerable<Item>>> GetMenu()
@@ -63,7 +61,6 @@ namespace OrderingSystem.Controllers.API
         [HttpGet("Order/{id}")]
         public async Task<ActionResult<ApiOrder>> GetOrder(int id)
         {
-
             ApiOrder apiOrder = new ApiOrder();
 
             using (_context)
@@ -72,7 +69,6 @@ namespace OrderingSystem.Controllers.API
                 apiOrder.order = await _context.Order.FindAsync(id);
                 var orderQuery = from item in _context.OrderItem where item.OrderId == id select item;
                 apiOrder.items = orderQuery.ToList();
-
             }
 
             if (apiOrder.order == null)
@@ -84,7 +80,7 @@ namespace OrderingSystem.Controllers.API
         }
 
         [HttpPost("Order")]
-        public async Task<ActionResult<Category>> PostCategory(ApiOrder apiOrder)
+        public async Task<ActionResult<Category>> PostOrder(ApiOrder apiOrder)
         {
             _context.Order.Add(apiOrder.order);
             _context.OrderItem.AddRange(apiOrder.items);
@@ -94,58 +90,22 @@ namespace OrderingSystem.Controllers.API
             return CreatedAtAction("Order", new { id = apiOrder.order.Id }, apiOrder);
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        // GET: api/Requests
-        [HttpGet]
-        public IEnumerable<string> Get()
+        // DELETE: api/Categories/5
+        [HttpDelete("Order/{id}")]
+        public async Task<ActionResult<Category>> DeleteCategory(int id)
         {
-            return new string[] { "value1", "value2" };
+            var category = await _context.Category.FindAsync(id);
+            if (category == null)
+            {
+                return NotFound();
+            }
+
+            _context.Category.Remove(category);
+            await _context.SaveChangesAsync();
+
+            return category;
         }
 
-        // GET: api/Requests/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
-        {
-            return "value";
-        }
 
-        // POST: api/Requests
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT: api/Requests/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }
