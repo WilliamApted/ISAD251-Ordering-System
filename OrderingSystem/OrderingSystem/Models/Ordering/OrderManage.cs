@@ -84,7 +84,7 @@ namespace OrderingSystem.Models.Ordering
             }
         }
 
-        public void CancelOrder(DatabaseContext context)
+        public bool CancelOrder(DatabaseContext context)
         {
             GetOrder(context);
 
@@ -92,8 +92,15 @@ namespace OrderingSystem.Models.Ordering
             {
                 //stored procedure to remove an order, so delete all orderItems with X id and then the order.
                 SqlParameter deleteQuery = new SqlParameter("@query", OrderId);
-                context.Database.ExecuteSqlRaw("DeleteOrder @query", deleteQuery);
+                int result = context.Database.ExecuteSqlRaw("DeleteOrder @query", deleteQuery);
+                if (result > 0) 
+                {
+                    //Successfully deleted/canceled the order.
+                    return true;
+                }
             }
+            //Not deleted/canceled an order.
+            return false;
         }
 
         public string GetSerialised()
