@@ -1,4 +1,5 @@
 ﻿using OrderingSystem.Models.Database;
+using OrderingSystem.Models.Database.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,28 +8,28 @@ using System.Threading.Tasks;
 
 namespace OrderingSystem.Models.Ordering
 {
-    public class BasketModel
+    public class Basket
     {
 
-        public List<BasketItemModel> items { get; set; }
+        public List<BasketItem> items { get; set; }
 
-        public BasketModel() 
+        public Basket() 
         {
             
         }       
         
         //Instantiates the BasketModel with the serialised value in the cookie.
-        public BasketModel(string cookieBasket) 
+        public Basket(string cookieBasket) 
         {
             try
             {
                 //Trys to desearlise the value held in the cookie, if success sets the item list.
-                items = JsonSerializer.Deserialize<BasketModel>(cookieBasket).items;
+                items = JsonSerializer.Deserialize<Basket>(cookieBasket).items;
             }
             catch 
             {
                 //If the cookie is empty, null etc. A new empty list will simply be created.
-                items = new List<BasketItemModel>();
+                items = new List<BasketItem>();
             }
         }
 
@@ -36,19 +37,19 @@ namespace OrderingSystem.Models.Ordering
         public void AddItem(int id) 
         {
             //Check if item exists, if it does, add quantity. If not, add the new item.
-            BasketItemModel basketItem = items.Find(item => item.ItemId == id);
+            BasketItem basketItem = items.Find(item => item.ItemId == id);
 
             if (basketItem != null)
                 basketItem.Quantity++;
             else
-                items.Add(new BasketItemModel(id, 1));
+                items.Add(new BasketItem(id, 1));
         }
 
         //Removes item from the basket
         public void RemoveItem(int id) 
         {
             //Check if item exists, if it does, add quantity. If not, add the new item.
-            BasketItemModel basketItem = items.Find(item => item.ItemId == id);
+            BasketItem basketItem = items.Find(item => item.ItemId == id);
 
             //Check if the basket item exists - Then remove from the basket.
             if (basketItem != null)
@@ -64,7 +65,7 @@ namespace OrderingSystem.Models.Ordering
         public decimal GetTotal(DatabaseContext context) 
         {
             decimal total = 0;
-            foreach (BasketItemModel basketItem in items)
+            foreach (BasketItem basketItem in items)
             {
                 Item itemDetail = context.Item.Where(item => item.Id == basketItem.ItemId).First();
                 total = total + basketItem.Quantity * itemDetail.Price;
@@ -77,7 +78,7 @@ namespace OrderingSystem.Models.Ordering
         {
             List<ItemDetailsModel> itemDetails = new List<ItemDetailsModel>();
 
-            foreach (BasketItemModel basketItem in items)
+            foreach (BasketItem basketItem in items)
             {
                 //Get the Item from the database - create new object to hold details
                 Item itemDetail = context.Item.Where(item => item.Id == basketItem.ItemId).First();
@@ -90,7 +91,7 @@ namespace OrderingSystem.Models.Ordering
         public void SetToOrder(DatabaseContext context, int orderId) 
         {
             List<OrderItem> orderItems = context.OrderItem.Where(item => item.OrderId == orderId).ToList();
-            items = orderItems.ConvertAll(basketItem => new BasketItemModel { ItemId = basketItem.ItemId, Quantity = basketItem.Quantity });
+            items = orderItems.ConvertAll(basketItem => new BasketItem { ItemId = basketItem.ItemId, Quantity = basketItem.Quantity });
         }
 
         //Serialises the basket so it can be stored in the cookie.

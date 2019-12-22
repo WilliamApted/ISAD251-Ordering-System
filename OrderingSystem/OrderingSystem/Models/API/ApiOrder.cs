@@ -1,4 +1,5 @@
 ﻿using OrderingSystem.Models.Database;
+using OrderingSystem.Models.Database.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ namespace OrderingSystem.Models.API
 {
     public class ApiOrder
     {
-        public Order order { get; set; }
+        public View_OrderOverview order { get; set; }
         public List<OrderItem> items { get; set; }
     }
 }

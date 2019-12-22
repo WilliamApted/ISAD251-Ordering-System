@@ -1,4 +1,18 @@
-﻿function AddToBasket($itemId) {
+﻿function FilterMenu($category) {
+    $.ajax({
+        type: "post",
+        url: '/Order/FilterMenu',
+        data: { __RequestVerificationToken: gettoken(), category: $category },
+        success: function (data) {
+            $("#menu").html(data);
+        },
+        error: function (error) {
+            console.log(error)
+        }
+    });
+}
+
+function AddToBasket($itemId) {
     $.ajax({
         type: "post",
         url: '/Basket/AddToBasket',

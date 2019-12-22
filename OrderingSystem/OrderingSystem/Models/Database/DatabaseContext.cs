@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OrderingSystem.Models.Database.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace OrderingSystem.Models.Database
         public DbSet<OrderItem> OrderItem { get; set; }
         public DbSet<Item> Item { get; set; }
         public DbSet<Category> Category { get; set;}
+        public DbSet<View_OrderOverview> OrderOverview { get; set; }
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {

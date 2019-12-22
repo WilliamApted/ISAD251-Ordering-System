@@ -4,9 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OrderingSystem.Models.API;
 using OrderingSystem.Models.Database;
+using OrderingSystem.Models.Database.Entities;
 using OrderingSystem.Models.Ordering;
 
 namespace OrderingSystem.Controllers.API
@@ -25,11 +27,11 @@ namespace OrderingSystem.Controllers.API
         // GET : /Order/
         //Returns the list of all placed orders.
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
+        public async Task<ActionResult<IEnumerable<View_OrderOverview>>> GetOrders()
         {
             using (_context)
             {
-                return await _context.Order.ToListAsync();
+                return await _context.OrderOverview.ToListAsync();
             }
         }
 
@@ -42,8 +44,7 @@ namespace OrderingSystem.Controllers.API
 
             using (_context)
             {
-
-                apiOrder.order = await _context.Order.FindAsync(id);
+                apiOrder.order = await _context.OrderOverview.FindAsync(id);
                 var orderQuery = from item in _context.OrderItem where item.OrderId == id select item;
                 apiOrder.items = orderQuery.ToList();
             }
@@ -56,34 +57,52 @@ namespace OrderingSystem.Controllers.API
             return apiOrder;
         }
 
-        // POST : /Order/{name associate with order}
+        // POST : /Order/{table number}/{name associate with order}
+        //Example body: [{"itemId":4,"quantity":2},{"itemId":6,"quantity":2}]
         //Creates a new order
-        [HttpPost("{name}")]
-        public async Task<IActionResult> AddOrder(String name, ApiOrder order)
+        [HttpPost("{table}/{name}")]
+        public IActionResult AddOrder(int table, String name, List<OrderItem> items)
         {
-            order.order.Name = name;
-            ApiOrder example = order;
-            
-            //Create the order...
-            
-            return NotFound();
+            if (name != null && items != null)
+            {
+                Order newOrder = new Order() { Name = name, Table = table, dateTime = DateTime.Now };
+                using (_context)
+                {
+                    _context.Order.Add(newOrder);
+                    _context.SaveChanges();
+                    _context.OrderItem.AddRange(items.ConvertAll(item => new OrderItem { ItemId = item.ItemId, Quantity = item.Quantity, OrderId = newOrder.Id }));
+                    _context.SaveChanges();
+                }
+                //Respond with created.
+                return StatusCode(201);
+            }
+            //Incorrect input parameters.
+            return BadRequest();
         }
 
         // PUT : /requests/Order/
         //Updates an existing order.
-        [HttpPut()]
-        public async Task<IActionResult> UpdateOrder(ApiOrder order)
+        [HttpPut("{id}/{name}")]
+        public IActionResult UpdateOrder(int id, string name, List<OrderItem> items)
         {
-            //Update the order here...
-
-            
-            return NotFound();
+            using (_context)
+            {
+                if (_context.Order.Where(findOrder => findOrder.Id == id && findOrder.Name == name).FirstOrDefault() != null)
+                {
+                    SqlParameter orderParam = new SqlParameter("@query", id);
+                    _context.Database.ExecuteSqlRaw("DeleteOrderItems @query", orderParam);
+                    _context.OrderItem.AddRange(items.ConvertAll(item => new OrderItem { ItemId = item.ItemId, Quantity = item.Quantity, OrderId = id }));
+                    _context.SaveChanges();
+                    return StatusCode(201);
+                }
+            }
+            return BadRequest();
         }
 
         // DELETE : /requests/Order/
         //Deletes an order.
         [HttpDelete("{id}/{name}")]
-        public async Task<IActionResult> DeleteOrder(int id, string name)
+        public IActionResult DeleteOrder(int id, string name)
         {
             using (_context)
             {

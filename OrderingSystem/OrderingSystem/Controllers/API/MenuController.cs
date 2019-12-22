@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OrderingSystem.Models.Database;
+using OrderingSystem.Models.Database.Entities;
 
 namespace OrderingSystem.Controllers.API
 {

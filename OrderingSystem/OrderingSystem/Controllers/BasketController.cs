@@ -24,11 +24,11 @@ namespace OrderingSystem.Controllers
         public IActionResult AddToBasket(int itemId)
         {
             //Get the value from the Basket cookie, add item, then set cookie again.
-            BasketModel basket = new BasketModel(Request.Cookies["Basket"]);
+            Basket basket = new Basket(Request.Cookies["Basket"]);
             basket.AddItem(itemId);
             CookieManager.SetCookie("Basket", basket.GetSerialised(), Response);
 
-            ViewData["editing"] = BasketModel.IsEditing(Request.Cookies["EditOrder"]);
+            ViewData["editing"] = Basket.IsEditing(Request.Cookies["EditOrder"]);
 
             //Return partial view of basket.
             using (_context)
@@ -42,11 +42,11 @@ namespace OrderingSystem.Controllers
         public IActionResult RemoveFromBasket(int itemId)
         {
             //Get the value from the Basket cookie, remove item, then set cookie again.
-            BasketModel basket = new BasketModel(Request.Cookies["Basket"]);
+            Basket basket = new Basket(Request.Cookies["Basket"]);
             basket.RemoveItem(itemId);
             CookieManager.SetCookie("Basket", basket.GetSerialised(), Response);
 
-            ViewData["editing"] = BasketModel.IsEditing(Request.Cookies["EditOrder"]);
+            ViewData["editing"] = Basket.IsEditing(Request.Cookies["EditOrder"]);
 
             //Return partial view of basket.
             using (_context)

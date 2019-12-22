@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OrderingSystem.Models.Database;
+using OrderingSystem.Models.Database.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -49,7 +50,7 @@ namespace OrderingSystem.Models.Ordering
             order = context.Order.Where(findOrder => findOrder.Id == OrderId && findOrder.Name == Name).FirstOrDefault();
         }
 
-        public void SaveEdit(BasketModel basket, DatabaseContext context) 
+        public void SaveEdit(Basket basket, DatabaseContext context) 
         {
             //Check order exists and is correct.
             GetOrder(context);

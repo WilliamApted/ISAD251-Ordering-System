@@ -5,16 +5,16 @@ using System.Threading.Tasks;
 
 namespace OrderingSystem.Models.Ordering
 {
-    public class BasketItemModel
+    public class BasketItem
     {
         public int ItemId { get; set; }
         public int Quantity { get; set; }
 
-        public BasketItemModel() 
+        public BasketItem() 
         {
         
         }       
-        public BasketItemModel(int itemId, int quantity) 
+        public BasketItem(int itemId, int quantity) 
         {
             this.ItemId = itemId;
             this.Quantity = quantity;

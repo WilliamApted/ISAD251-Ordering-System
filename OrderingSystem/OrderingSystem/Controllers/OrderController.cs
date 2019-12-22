@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OrderingSystem.Models.Database;
+using OrderingSystem.Models.Database.Entities;
 using OrderingSystem.Models.Ordering;
 using OrderingSystem.SharedFunctions;
 
@@ -32,20 +33,36 @@ namespace OrderingSystem.Controllers
                 ViewData["menu"] = GetMenuItems();
 
                 //Checking if an order is being edited, or just a new order.
-                ViewData["editing"] = BasketModel.IsEditing(Request.Cookies["EditOrder"]);
+                ViewData["editing"] = Basket.IsEditing(Request.Cookies["EditOrder"]);
 
                 //Gets the list of items in the basket
-                ViewData["basket"] = new BasketModel(Request.Cookies["Basket"]).GetItemDetails(_context);
+                ViewData["basket"] = new Basket(Request.Cookies["Basket"]).GetItemDetails(_context);
             }
             return View();
         }
 
         //Gets all available menu items
-        public List<Item> GetMenuItems()
+        public List<Item> GetMenuItems(int category = 0)
         {
+
             var menuQuery = from item in _context.Item where item.Available == true select item;
-            List<Item> items = menuQuery.ToList();
+            List<Item> items;
+            if (category != 0)
+            {
+                items = menuQuery.Where(item => item.Category.Equals(category)).ToList();
+            }
+            else
+            {
+                items = menuQuery.ToList();
+            }
             return items;
+        }
+
+        [ValidateAntiForgeryToken]
+        public IActionResult FilterMenu(int category) 
+        {
+            Console.WriteLine(category);
+            return PartialView("/Views/Shared/Menu/_menu.cshtml", GetMenuItems(category));
         }
 
         //Returns the view order page
@@ -95,7 +112,7 @@ namespace OrderingSystem.Controllers
                 if (order.order != null)
                 {
                     //Sets up the basket with the list of items in the order.
-                    BasketModel basket = new BasketModel();
+                    Basket basket = new Basket();
                     basket.SetToOrder(_context, order.OrderId);
                     CookieManager.SetCookie("Basket", basket.GetSerialised(), Response);
 
@@ -117,7 +134,7 @@ namespace OrderingSystem.Controllers
                 //Gets the order details from the cookie.
                 OrderManage order = new OrderManage(Request.Cookies["EditOrder"]);
                 //Then saves the changes made to the order.
-                order.SaveEdit(new BasketModel(Request.Cookies["Basket"]), _context);
+                order.SaveEdit(new Basket(Request.Cookies["Basket"]), _context);
 
                 //Then clears the cookies used for editing an order.
                 CookieManager.RemoveCookie("Basket", Response);
@@ -139,7 +156,7 @@ namespace OrderingSystem.Controllers
                 order.CancelOrder(_context);
 
                 //Show order canceled message
-                return RedirectToAction("ViewOrder");
+                return View("CancelOrderComplete");
             }
         }
 
@@ -149,7 +166,7 @@ namespace OrderingSystem.Controllers
             using (_context)
             {
                 //Gets details on all items in basket, used to display on confirm page.
-                BasketModel basket = new BasketModel(Request.Cookies["Basket"]);
+                Basket basket = new Basket(Request.Cookies["Basket"]);
                 ViewData["basket"] = basket.GetItemDetails(_context);
                 ViewData["total"] = basket.GetTotal(_context);
                 return View();
@@ -163,7 +180,7 @@ namespace OrderingSystem.Controllers
         {
             using (_context)
             {
-                BasketModel basket = new BasketModel(Request.Cookies["Basket"]);
+                Basket basket = new Basket(Request.Cookies["Basket"]);
                 if (ModelState.IsValid)
                 {
                     //gets the items from the basket cookie, then calling newOrder method.

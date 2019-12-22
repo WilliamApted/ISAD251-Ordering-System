@@ -1,4 +1,5 @@
 ﻿using OrderingSystem.Models.Database;
+using OrderingSystem.Models.Database.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -22,7 +23,7 @@ namespace OrderingSystem.Models.Ordering
         }
 
         //Confirm order here
-        public int NewOrder(BasketModel basket, DatabaseContext context)
+        public int NewOrder(Basket basket, DatabaseContext context)
         {
             Order newOrder = new Order() { Name = this.Name, Table = this.TableNumber, dateTime = DateTime.Now };
             context.Order.Add(newOrder);
