@@ -44,7 +44,9 @@ namespace OrderingSystem.Controllers.API
 
             using (_context)
             {
+                //Gets the overview of the order with the select id.
                 apiOrder.order = await _context.OrderOverview.FindAsync(id);
+                //Gets all items associated with the order.
                 var orderQuery = from item in _context.OrderItem where item.OrderId == id select item;
                 apiOrder.items = orderQuery.ToList();
             }
@@ -53,7 +55,7 @@ namespace OrderingSystem.Controllers.API
             {
                 return NotFound();
             }
-
+            //Returns the apiOrder - which includes the orderoverview and order items.
             return apiOrder;
         }
 
@@ -65,11 +67,14 @@ namespace OrderingSystem.Controllers.API
         {
             if (name != null && items != null)
             {
+                //Creates a new order
                 Order newOrder = new Order() { Name = name, Table = table, dateTime = DateTime.Now };
                 using (_context)
                 {
+                    //Adding the new order entry to the database
                     _context.Order.Add(newOrder);
                     _context.SaveChanges();
+                    //Adding all order items to the database.
                     _context.OrderItem.AddRange(items.ConvertAll(item => new OrderItem { ItemId = item.ItemId, Quantity = item.Quantity, OrderId = newOrder.Id }));
                     _context.SaveChanges();
                 }
@@ -87,8 +92,10 @@ namespace OrderingSystem.Controllers.API
         {
             using (_context)
             {
+                //Checks the order exists with the parameters 
                 if (_context.Order.Where(findOrder => findOrder.Id == id && findOrder.Name == name).FirstOrDefault() != null)
                 {
+                    //Removes item from order then adds the updated list of items.
                     SqlParameter orderParam = new SqlParameter("@query", id);
                     _context.Database.ExecuteSqlRaw("DeleteOrderItems @query", orderParam);
                     _context.OrderItem.AddRange(items.ConvertAll(item => new OrderItem { ItemId = item.ItemId, Quantity = item.Quantity, OrderId = id }));

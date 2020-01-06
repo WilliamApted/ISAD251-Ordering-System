@@ -2,7 +2,7 @@
     $.ajax({
         type: "post",
         url: '/Order/FilterMenu',
-        data: { __RequestVerificationToken: gettoken(), $category: $category },
+        data: { __RequestVerificationToken: gettoken(), category: $category },
         success: function (data) {
             $("#menu").html(data);
         },

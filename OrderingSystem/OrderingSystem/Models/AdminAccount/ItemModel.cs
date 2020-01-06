@@ -38,12 +38,14 @@ namespace OrderingSystem.Models.AdminAccount
             Available = item.Available;        
         }
         
+        //Adds new item to the database
         public void Add(DatabaseContext context) 
         {
             context.Item.Add(new Item(this));
             context.SaveChanges();
         }
 
+        //Updates existing item in the database
         public void Update(DatabaseContext context) 
         {
             Item item = context.Item.First(select => select.Id == Id);

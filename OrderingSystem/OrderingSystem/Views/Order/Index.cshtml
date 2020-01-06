@@ -2,10 +2,12 @@
     ViewData["Title"] = "Menu";
 }
 
+<!--Shows the menu-->
 <div id="menu">
     @await Html.PartialAsync("/Views/Shared/Menu/_Menu.cshtml", ViewData["menu"])
 </div>
 
+<!--Shows the basket-->
 <div id="basket">
     @await Html.PartialAsync("/Views/Shared/Menu/_Basket.cshtml", ViewData["basket"])
 </div>

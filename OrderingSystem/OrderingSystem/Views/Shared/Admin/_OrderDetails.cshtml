@@ -1,5 +1,6 @@
 ﻿@model List<ItemDetailsModel>
 
+<!--Used for showing a customers order details/list of items-->
 @foreach (ItemDetailsModel item in Model)
 {
     @await Html.PartialAsync("/Views/Shared/Order/_ConfirmItem.cshtml", item);

@@ -44,24 +44,26 @@ namespace OrderingSystem.Controllers
         //Gets all available menu items
         public List<Item> GetMenuItems(int category = 0)
         {
-
+            //Gets all available items.
             var menuQuery = from item in _context.Item where item.Available == true select item;
             List<Item> items;
             if (category != 0)
             {
+                //Returns items in the select category.
                 items = menuQuery.Where(item => item.Category.Equals(category)).ToList();
             }
             else
             {
+                //Returns items in all categorys
                 items = menuQuery.ToList();
             }
             return items;
         }
 
+        //Will return a partial view to update the menu with filters applied to categories. 
         [ValidateAntiForgeryToken]
         public IActionResult FilterMenu(int category) 
         {
-            Console.WriteLine(category);
             return PartialView("/Views/Shared/Menu/_menu.cshtml", GetMenuItems(category));
         }
 
@@ -183,7 +185,7 @@ namespace OrderingSystem.Controllers
                 Basket basket = new Basket(Request.Cookies["Basket"]);
                 if (ModelState.IsValid)
                 {
-                    //gets the items from the basket cookie, then calling newOrder method.
+                    //Gets the items from the basket cookie, then calling newOrder method.
                     int orderId = order.NewOrder(basket, _context);
                     CookieManager.RemoveCookie("Basket", Response);
 

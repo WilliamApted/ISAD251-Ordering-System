@@ -1,11 +1,13 @@
 ﻿@model List<Item>
-<!--Used for showing the full menu. Will iterate through each item and display in a grid -->
+
+<!--Buttons for filtering menu items.-->
 <div class="btn-group flex-wrap m-2" data-toggle="buttons">
     <button class="btn btn-light btn-lg" onclick="FilterMenu(0)" type="button">All</button>
     <button class="btn btn-light btn-lg" onclick="FilterMenu(1)" type="button">Drinks</button>
     <button class="btn btn-light btn-lg" onclick="FilterMenu(2)" type="button">Snacks</button>
 </div>
 
+<!--Used for showing the full menu. Will iterate through each item and display in a grid -->
 <div class="row flex-column flex-md-row no-gutter">
     <div class="col-sm-9 col-lg-9">
         <div class="row no-gutter">

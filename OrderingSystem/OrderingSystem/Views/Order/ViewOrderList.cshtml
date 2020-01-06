@@ -6,7 +6,9 @@
 <hr>
 <h2>View order - #@ViewData["OrderNumber"]</h2>
 
+
 <div>
+    <!--Order overview, buttons to edit and cancel.-->
     <div class="card mb-3">
         <div class="row no-gutters">
             <div class="col-12">
@@ -30,9 +32,10 @@
         </div>
     </div>
 
+    <!--List of order items-->
     @foreach (ItemDetailsModel item in (List<ItemDetailsModel>)ViewData["OrderDetails"])
     {
-    @await Html.PartialAsync("/Views/Shared/Order/_ConfirmItem.cshtml", item);
+        @await Html.PartialAsync("/Views/Shared/Order/_ConfirmItem.cshtml", item);
     }
 
 </div>

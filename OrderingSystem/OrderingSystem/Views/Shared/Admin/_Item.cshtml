@@ -1,5 +1,6 @@
 ﻿@model Item
 
+<!--Item on admins item list.-->
 <div class="col-sm-12 col-md-4 col-lg-3 mb-3">
     <div class="card mb-3 h-100">
         <img class="card-img-top" src="@Model.ImageUrl" alt="@Model.Name">
@@ -13,6 +14,7 @@
         </div>
         <div></div>
         <div>
+            <!--Button to edit the item - RED and marked as withdrawn if withdrawn from sale.-->
             @if (Model.Available == false)
             {
                 <button onclick="EditItem(@Model.Id)" class="btn btn-danger btn-block">Withdrawn - Edit Item</button>

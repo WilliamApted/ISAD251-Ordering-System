@@ -12,6 +12,7 @@
 <body class="bg-light">
 
     <header>
+        <!--Top navigation bar-->
         <nav class="navbar fixed-top navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom mb-3">
             <div class="container">
 
@@ -44,13 +45,14 @@
         </div>
     </footer>
 
+    <!--Body rendered under layout here-->
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <!--This exists here so the anti forgery token can be used with javascript calls-->
+    <!--This exists here so the anti forgery token can be used within javascript calls-->
     <script type="text/javascript">
         function gettoken() {
             var token = '@Html.AntiForgeryToken()';

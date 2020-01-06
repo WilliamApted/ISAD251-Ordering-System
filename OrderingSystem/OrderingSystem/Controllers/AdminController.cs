@@ -26,6 +26,7 @@ namespace OrderingSystem.Controllers
         //Index page - Shows login page Or list of items.
         public IActionResult Index() 
         {
+            //Check the user is logged in.
             if (User.Identity.IsAuthenticated)
             {
                 //Gets all the menu items
@@ -40,7 +41,7 @@ namespace OrderingSystem.Controllers
             }
             else 
             {
-                //Shows the login page
+                //Shows the login page if not logged in.
                 return View("Login");
             }
         }
@@ -58,6 +59,7 @@ namespace OrderingSystem.Controllers
             //Get list of all orders, with basic details - ID, Name, Table Number, Time...
             using (_context)
             {
+                //Gets all the orders (sorted by newest first.)
                 var orderQuery = from order in _context.Order select order;
                 orderQuery = orderQuery.OrderByDescending(orderby => orderby.Id);
                 List<Order> items = orderQuery.ToList();
@@ -77,20 +79,21 @@ namespace OrderingSystem.Controllers
                 var orderQuery = from orderSearch in _context.OrderItem where orderSearch.OrderId == orderId select orderSearch;
                 List<OrderItem> orderItems = orderQuery.ToList();
 
+                //Returning a partial view for the order list page.
                 return PartialView("/Views/Shared/Admin/_OrderDetails.cshtml", GetItemList(orderItems));
             }
         }
 
-        //Change this - use another function  
+        //Returns all the details for items.
         public List<ItemDetailsModel> GetItemList(List<OrderItem> orderItems)
         {
             List<ItemDetailsModel> itemDetails = new List<ItemDetailsModel>();
 
             foreach (OrderItem item in orderItems)
             {
+                //For each item, gets the name, price, image etc.
                 var menuQuery = from tempitem in _context.Item where tempitem.Id == item.ItemId select tempitem;
                 Item items = menuQuery.First();
-                //Adds the Basket Item model to the list
                 itemDetails.Add(new ItemDetailsModel() { ItemId = item.ItemId, Name = items.Name, Quantity = item.Quantity, Price = items.Price, ImgUrl = items.ImageUrl });
             }
             return itemDetails;
@@ -145,8 +148,6 @@ namespace OrderingSystem.Controllers
                 if (ModelState.IsValid)
                 {
                     newItem.Add(_context);
-
-                    //Return some feedback of success
                     return View();
                 }
                 else

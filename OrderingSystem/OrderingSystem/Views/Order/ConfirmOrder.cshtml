@@ -12,7 +12,7 @@
             <div class="col-12">
                 <div class="card-body">
                     <a asp-controller="Order" asp-action="Index" style="width:160px;" class="btn btn-primary">Return to Menu</a>
-
+                    <!--Form for user to input Name and Table Number-->
                     <form method="post" asp-action="ConfirmOrder" asp-controller="Order">
                         <hr>
                         <div class="form-row">
@@ -40,6 +40,7 @@
         </div>
     </div>
 
+    <!--List of customers items is created here-->
     @foreach (ItemDetailsModel item in (List<ItemDetailsModel>)ViewData["basket"])
     {
         @await Html.PartialAsync("/Views/Shared/Order/_ConfirmItem.cshtml", item);
