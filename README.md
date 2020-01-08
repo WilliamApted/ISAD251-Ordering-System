@@ -21,7 +21,9 @@ Trello Board for project : https://trello.com/b/YkNjvNBP/isad251-ordering-system
 
 Usability - Should have a good, clear interface design. Must conform to accessibility rules (WCAG Guidelines). 
 
-Further requirement to be added...
+## Video Demo
+
+[![Ordering System Demo](http://img.youtube.com/vi/gagBvBvzup8YOUTUBE_VIDEO_ID_HERE/0.jpg)](http://www.youtube.com/watch?v=gagBvBvzup8 "Ordering System Demo")
 
 ## Application Screenshots
 
