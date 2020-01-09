@@ -30,40 +30,55 @@ Usability - Should have a good, clear interface design. Must conform to accessib
 ### Customer 
 
 **Customer menu view - Chrome**
-![(Chrome Browser)Customer menu](Documentation/Screenshots/CustomerMenu.PNG?raw=true)
 
+<img src="Documentation/Screenshots/CustomerMenu.PNG?raw=true" width="600" alt="(Chrome Browser)Customer menu">
 
 **Customer menu view - Firefox**
-![(Firefox Browser)Customer menu](Documentation/Screenshots/FirefoxCustomerMenu.PNG?raw=true)
 
+<img src="Documentation/Screenshots/FirefoxCustomerMenu.PNG?raw=true" width="600" alt="(Firefox Browser)Customer menu">
 
 **Customer order confirm - Chrome**
-![(Chrome Browser)Customer confirm order](Documentation/Screenshots/CustomerConfirm.PNG?raw=true)
+
+<img src="Documentation/Screenshots/CustomerConfirm.PNG?raw=true" width="600" alt="(Chrome Browser)Customer confirm order">
 
 
 **Customer order confirm - Firefox**
-![(Firefox Browser)Customer confirm order](Documentation/Screenshots/FirefoxCustomerConfirm.PNG?raw=true)
+
+<img src="Documentation/Screenshots/FirefoxCustomerConfirm.PNG?raw=true" width="600" alt="(Firefox Browser)Customer confirm order">
 
 
 **Customer view order - Chrome**
-![(Chrome Browser)Customer view order](Documentation/Screenshots/CustomerViewOrder.PNG?raw=true )
+
+<img src="Documentation/Screenshots/FirefoxCustomerConfirm.PNG?raw=true" width="600" alt="(Chrome Browser)Customer view order">
 
 
 **Customer view order - Firefox**
-![(Firefox Browser)Customer view order](Documentation/Screenshots/FirefoxCustomerViewOrder.PNG?raw=true)
+
+<img src="Documentation/Screenshots/FirefoxCustomerViewOrder.PNG?raw=true" width="600" alt="(Firefox Browser)Customer view order">
+
 
 ### Administration
 **Admin view items - Chrome**
-![(Chrome Browser)Admin view items](Documentation/Screenshots/AdminViewItems.PNG?raw=true)
+
+<img src="Documentation/Screenshots/FirefoxCustomerViewOrder.PNG?raw=true" width="600" alt="(Chrome Browser)Admin view items">
 
 
 **Admin view items - Firefox**
-![(Firefox Browser)Admin view items](Documentation/Screenshots/FirefoxAdminViewItems.PNG?raw=true)
+
+<img src="Documentation/Screenshots/FirefoxAdminViewItems.PNG?raw=true" width="600" alt="(Firefox Browser)Admin view items">
 
 
 **Admin view orders - Chrome**
-![(Chrome Browser)Admin view orders](Documentation/Screenshots/AdminViewOrders.PNG?raw=true)
+
+<img src="Documentation/Screenshots/AdminViewOrders.PNG?raw=true" width="600" alt="(Chrome Browser)Admin view orders">
 
 
 **Admin view orders - Firefox**
-![(Firefox Browser)Admin view orders](Documentation/Screenshots/FirefoxAdminViewOrders.PNG?raw=true)
+
+
+### Mobile
+
+<img src="Documentation/Screenshots/MobileMenu.PNG?raw=true" width="250" alt="Menu on mobile">
+<img src="Documentation/Screenshots/MobileViewOrder.PNG?raw=true" width="250" alt="Viewing order on mobile">
+
+## Web Accessibility Testing
