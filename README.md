@@ -82,3 +82,31 @@ Usability - Should have a good, clear interface design. Must conform to accessib
 <img src="Documentation/Screenshots/MobileViewOrder.PNG?raw=true" width="250" alt="Viewing order on mobile">
 
 ## Web Accessibility Testing
+
+**Accessibility testing performed using Axe Accessibility browser plugin.**
+
+**Index/Menu** 
+
+<img src="Documentation/Screenshots/MenuAccessibilityCheck.PNG?raw=true" width="800" alt="(Chrome Browser)Admin view orders">
+
+**Confirm order page**
+
+<img src="Documentation/Screenshots/ConfirmOrderAccessibilityCheck.PNG?raw=true" width="800" alt="(Chrome Browser)Admin view orders">
+
+**View order page**
+
+<img src="Documentation/Screenshots/ViewOrderAccessibilityCheck.PNG?raw=true" width="800" alt="(Chrome Browser)Admin view orders">
+
+**Admin item list**
+
+<img src="Documentation/Screenshots/AdminItemsAccessibilityCheck.PNG?raw=true" width="800" alt="(Chrome Browser)Admin view orders">
+
+**Admin view customer orders**
+
+<img src="Documentation/Screenshots/AdminCustomerOrdersAccessibilityCheck.PNG?raw=true" width="800" alt="(Chrome Browser)Admin view orders">
+
+
+
+
+
+
