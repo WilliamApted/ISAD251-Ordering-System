@@ -3,7 +3,7 @@
 <!--Single item on the menu-->
 <div class="col-sm-12 col-md-6 col-lg-4 mb-3">
     <div class="card mb-3 h-100">
-        <img class="card-img-top" src="@Model.ImageUrl" alt="@Model.Name">
+        <img class="card-img-top" src="@Program.relativePath@Model.ImageUrl" alt="@Model.Name">
         <div class="card-body">
             <h5 class="card-title">
                 @Model.Name - £@Model.Price.ToString("0.00")

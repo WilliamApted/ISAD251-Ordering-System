@@ -3,7 +3,7 @@
 
     $.ajax({
         type: "post",
-        url: '/Admin/ViewOrderDetails',
+        url: '/ISAD251/wapted/Admin/ViewOrderDetails',
         data: { __RequestVerificationToken: gettoken(), orderId: $orderId },
         success: function (data) {
             $("#orderDetails" + $orderId).html(data);
@@ -23,7 +23,7 @@ function CloseOrderDetail($orderId)
 function EditItem($itemId) {
     $.post({
         type: "post",
-        url: '/Admin/EditItemRequest',
+        url: '/ISAD251/wapted/Admin/EditItemRequest',
         data: { __RequestVerificationToken: gettoken(), itemId: $itemId },
         success: function (data) {
             $(window.document.body).html(data)
@@ -34,7 +34,7 @@ function EditItem($itemId) {
 function Logout() {
     $.post({
         type: "post",
-        url: '/Admin/Logout',
+        url: '/ISAD251/wapted/Admin/Logout',
         success: function (data) {
             $(window.document.body).html(data)
         },

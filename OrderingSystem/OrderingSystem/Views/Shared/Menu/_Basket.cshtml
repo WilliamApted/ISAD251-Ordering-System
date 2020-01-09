@@ -5,11 +5,15 @@
     <div class="card h-100">
         <div class="card-footer">
             <div class="row no-gutter">
-                <div class="col-3">
-                    <a class="btn btn-secondary btn-lg btn-block">£</a>
-                </div>
-                <div class="col-9">
-                    <button class="btn btn-primary btn-lg btn-block" type="button" data-toggle="collapse" data-target="#basket" aria-expanded="false" aria-controls="basket">View Order</button>
+                <div class="col-12">
+                    @if ((bool)ViewData["editing"] == true)
+                    {
+                        <button onclick="SaveOrder()" class="btn btn-primary btn-block">Save changes</button>
+                    }
+                    else
+                    {
+                        <a asp-controller="Order" asp-action="ConfirmOrder" class="btn btn-primary btn-block">Confirm Order</a>
+                    }
                 </div>
             </div>
         </div>

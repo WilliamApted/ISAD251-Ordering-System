@@ -11,15 +11,21 @@ namespace OrderingSystem
 {
     public class Program
     {
+        //Just to make wwwroot work on socem server..
+        public static string relativePath = "/ISAD251/wapted/";
+
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
+
+
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    //webBuilder.UseWebRoot("/ISAD251/wapted/");
                     webBuilder.UseStartup<Startup>();
                 });
     }

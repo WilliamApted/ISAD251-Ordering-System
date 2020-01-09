@@ -1,0 +1,94 @@
+CREATE TABLE [dbo].[Category] (
+    [Id]   INT          NOT NULL,
+    [Name] VARCHAR (50) NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+
+CREATE TABLE [dbo].[Item] (
+    [Id]          INT           IDENTITY (1, 1) NOT NULL,
+    [Name]        VARCHAR (100) NOT NULL,
+    [Description] VARCHAR (500) NULL,
+    [ImageUrl]    VARCHAR (100) NULL,
+    [Price]       MONEY         NOT NULL,
+    [Category]    INT           NOT NULL,
+    [Available]   BIT           NOT NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+CREATE TABLE [dbo].[Order] (
+    [Id]       INT          IDENTITY (1, 1) NOT NULL,
+    [Name]     VARCHAR (80) NOT NULL,
+    [Table]    INT          NOT NULL,
+    [dateTime] DATETIME     NOT NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+
+GO
+CREATE TRIGGER [dbo].[RemoveOrderItems]
+ON [Order]
+AFTER DELETE
+AS
+BEGIN 
+	DELETE FROM
+		[OrderItem]
+	WHERE
+		[OrderId] IN (SELECT [Id] FROM [deleted]);
+END;
+
+
+
+
+CREATE TABLE [dbo].[OrderItem] (
+    [OrderId]  INT NOT NULL,
+    [ItemId]   INT NOT NULL,
+    [Quantity] INT NOT NULL,
+    PRIMARY KEY CLUSTERED ([OrderId] ASC, [ItemId] ASC),
+    FOREIGN KEY ([ItemId]) REFERENCES [dbo].[Item] ([Id]),
+    FOREIGN KEY ([OrderId]) REFERENCES [dbo].[Order] ([Id])
+);
+
+
+
+
+
+CREATE VIEW [dbo].[ItemDetails]
+AS 
+SELECT 
+	i.[Id], i.[Name], i.[Description], i.[Price], c.[Name] AS "Category", i.[Available]
+FROM [Item] AS i INNER JOIN [Category] AS c ON i.Category = c.Id;
+
+
+
+CREATE VIEW [dbo].[OrderOverview]
+	AS SELECT [Id], [dateTime], [Table] FROM [Order];
+
+
+CREATE PROCEDURE [dbo].[DeleteOrder]
+	@orderId int
+AS
+BEGIN 
+	DELETE FROM
+		[OrderItem]
+	WHERE
+		OrderId = @orderId;
+END
+BEGIN 
+	DELETE FROM	
+		[Order]
+	WHERE
+		Id = @orderId;
+END;
+
+
+CREATE PROCEDURE [dbo].[DeleteOrderItems]
+	@orderId int
+AS
+BEGIN 
+	DELETE FROM
+		[OrderItem]
+	WHERE
+		OrderId = @orderId;
+END;
+

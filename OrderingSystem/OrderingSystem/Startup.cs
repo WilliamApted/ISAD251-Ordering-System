@@ -48,11 +48,18 @@ namespace OrderingSystem
             app.UseHttpsRedirection();
 
             app.UseStaticFiles();
+
+            
+
             app.UseRouting();
 
             //Enabling for Login/Authentication System
             app.UseAuthentication();
             app.UseAuthorization();
+
+
+            app.UsePathBase("/ISAD251/wapted/");
+
 
             //Setting up routing. Sets default index location.
             app.UseEndpoints(endpoints =>

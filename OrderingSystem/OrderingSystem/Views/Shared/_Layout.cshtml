@@ -1,13 +1,15 @@
-﻿@Html.AntiForgeryToken()
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
+
+@Html.AntiForgeryToken()
+
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Ordering System - @ViewData["Title"] </title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
-    <script src="~/js/site.js"></script>
+    <link rel="stylesheet" href="@Program.relativePath/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="@Program.relativePath/css/site.css" />
+    <script src="@Program.relativePath/js/site.js"></script>
 </head>
 <body class="bg-light">
 
@@ -61,8 +63,8 @@
         }
     </script>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="@Program.relativePath/lib/jquery/dist/jquery.min.js"></script>
+    <script src="@Program.relativePath/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="@Program.relativePath/js/site.js" asp-append-version="true"></script>
 </body>
 </html>
