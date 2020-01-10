@@ -154,4 +154,4 @@ C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\bin
 C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\bin\Release\netcoreapp3.0\wwwroot\Imgs\Items\Scones.jpg
 C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\bin\Release\netcoreapp3.0\wwwroot\Imgs\Items\Tea.jpg
 C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\bin\Release\netcoreapp3.0\wwwroot\Imgs\Items\Teacake.jpg
-C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\obj\Release\netcoreapp3.0\OrderingSystem.csprojAssemblyReference.cache
+C:\Users\willa\Documents\GitHub\OrderingSystem\OrderingSystem\OrderingSystem\bin\Release\netcoreapp3.0\wwwroot\lib\bootstrap\dist\css\bootstrap.css

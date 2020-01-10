@@ -12,7 +12,7 @@ namespace OrderingSystem
     public class Program
     {
         //Just to make wwwroot work on socem server..
-        public static string relativePath = "/ISAD251/wapted/";
+        public static string relativePath = "";//"/ISAD251/wapted/";
 
         public static void Main(string[] args)
         {

@@ -1,7 +1,7 @@
 ﻿function FilterMenu($category) {
     $.ajax({
         type: "post",
-        url: '/ISAD251/wapted/Order/FilterMenu',
+        url: '/Order/FilterMenu',
         data: { __RequestVerificationToken: gettoken(), category: $category },
         success: function (data) {
             $("#menu").html(data);
@@ -15,7 +15,7 @@
 function AddToBasket($itemId) {
     $.ajax({
         type: "post",
-        url: '/ISAD251/wapted/Basket/AddToBasket',
+        url: '/Basket/AddToBasket',
         data: { __RequestVerificationToken: gettoken(), itemId: $itemId },
         success: function (data) {
             $("#basket").html(data);
@@ -29,7 +29,7 @@ function AddToBasket($itemId) {
 function RemoveFromBasket($itemId) {
     $.ajax({
         type: "post",
-        url: '/ISAD251/wapted/Basket/RemoveFromBasket',
+        url: '/Basket/RemoveFromBasket',
         data: { __RequestVerificationToken: gettoken(), itemId: $itemId },
         success: function (data) {
             $("#basket").html(data);
@@ -43,7 +43,7 @@ function RemoveFromBasket($itemId) {
 function EditOrder($orderId, $name) {
     $.post({
         type: "post",
-        url: '/ISAD251/wapted/Order/EditOrder',
+        url: '/Order/EditOrder',
         data: { __RequestVerificationToken: gettoken(), orderId: $orderId, name: $name },
         success: function (data) {
             $(window.document.body).html(data)
@@ -54,7 +54,7 @@ function EditOrder($orderId, $name) {
 function SaveOrder() {
     $.post({
         type: "post",
-        url: '/ISAD251/wapted/Order/SaveEditOrder',
+        url: '/Order/SaveEditOrder',
         data: { __RequestVerificationToken: gettoken() },
         success: function (data) {
             $(window.document.body).html(data)
@@ -65,7 +65,7 @@ function SaveOrder() {
 function CancelOrder($orderId, $name) {
     $.post({
         type: "post",
-        url: '/ISAD251/wapted/Order/CancelOrder',
+        url: '/Order/CancelOrder',
         data: { __RequestVerificationToken: gettoken(), orderId: $orderId, name: $name },
         success: function (data) {
             $(window.document.body).html(data)
